@@ -40,4 +40,5 @@ def main():
     input("Press Enter to continue...")
     return
 
-main()
+if __name__ == '__main__':
+    main()

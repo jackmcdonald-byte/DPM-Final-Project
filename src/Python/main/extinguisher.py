@@ -1,0 +1,2 @@
+class Extinguisher:
+    pass

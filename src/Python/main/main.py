@@ -1,4 +1,10 @@
-def main():
-    return
+from robot import Robot
 
-main()
+
+def main():
+    robot = Robot()
+    robot.run()
+
+
+if __name__ == '__main__':
+    main()
