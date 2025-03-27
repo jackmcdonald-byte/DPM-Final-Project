@@ -16,6 +16,7 @@ def rotation_test():
 
 
 def dispenser_motor_test():
+    input("Press Enter to continue...")
     motor.dispense()
     input("Press Enter to continue...")
     motor.dispense()
@@ -35,8 +36,8 @@ def main():
     forward_movement_test()
     input("Press Enter to continue...")
     rotation_test()
-    input("Press Enter to continue...")
     dispenser_motor_test()
     input("Press Enter to continue...")
     return
 
+main()

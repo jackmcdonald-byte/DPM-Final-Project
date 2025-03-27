@@ -22,7 +22,7 @@ SPEED_LIMIT = 720
 
 DISTANCE_TO_DEGREES = 180 / (pi * WHEEL_RADIUS)  # scale factor for distance
 ORIENTATION_TO_DEGREES = AXLE_LENGTH / WHEEL_RADIUS  # scale factor for rotation
-DISPENSER_TURN_ANGLE = 40
+DISPENSER_TURN_ANGLE = -47
 
 MOVEMENT_CORRECTION_FACTOR = 1
 
@@ -75,6 +75,8 @@ def dispense():
         MOTOR_DISPENSER.set_dps(DSP_SPEED)
         MOTOR_DISPENSER.set_limits(POWER_LIMIT, DSP_SPEED)
         MOTOR_DISPENSER.set_position_relative(DISPENSER_TURN_ANGLE)
+
+        wait_for_motor(MOTOR_DISPENSER)
     except IOError as error:
         print(error)
 
@@ -84,5 +86,7 @@ def reset_dispenser():
         MOTOR_DISPENSER.set_dps(DSP_SPEED)
         MOTOR_DISPENSER.set_limits(POWER_LIMIT, DSP_SPEED)
         MOTOR_DISPENSER.set_position(0)
+
+        wait_for_motor(MOTOR_DISPENSER)
     except IOError as error:
         print(error)
