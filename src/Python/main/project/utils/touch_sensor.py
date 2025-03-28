@@ -6,13 +6,15 @@ wait_ready_sensors()
 
 def is_pressed() -> bool:
     """
-    Determine if a specific sensor is pressed.
+    Checks the state of the touch sensor and returns whether it is pressed.
 
-    Parameters:
-    sensor (int): The identifier of the sensor to check. Accepted values are
-    1 for TOUCH_SENSOR_1 and 2 for TOUCH_SENSOR_2.
+    This function interacts with the touch sensor to determine if it is currently
+    being pressed. The function returns a boolean indicating the state of the
+    touch sensor.
 
-    Returns:
-    bool: True if the specified sensor is pressed, False otherwise.
+    :return: Boolean value indicating the state of the touch sensor. True if the
+        sensor is pressed, otherwise False.
+    :rtype: bool
+    Author: Jack McDonald
     """
     return TOUCH_SENSOR.is_pressed()

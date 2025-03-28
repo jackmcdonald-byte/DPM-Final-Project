@@ -1,10 +1,10 @@
 class Navigation:
     def __init__(self):
-        self.search_array = {
-            {'u', 'u', 'u'},
-            {'u', 'u', 'u'},
-            {'w', 'c', 'w'}
-        }
+        self.search_array = [
+            ['u', 'u', 'u'],
+            ['u', 'u', 'u'],
+            ['w', 'c', 'w']
+        ]
         self.search_queue = {}
         self.found = 0
 
@@ -12,4 +12,7 @@ class Navigation:
         pass
 
     def get_next_route(self):
+        pass
+
+    def update_position(self):
         pass
