@@ -13,12 +13,12 @@ COLOR_SENSOR = EV3ColorSensor(2)  # Color sensor on port 2
 COLOR_DATA = {
     "red": {"R": 0.6951, "G": 0.2053, "B": 0.0996},
     "blue": {"R": 0.1771, "G": 0.4486, "B": 0.3743},
-    "green": {"R": 0.3946, "G": 0.5585, "B": 0.0469},  # Updated green values
+    "green": {"R": 0.3946, "G": 0.5585, "B": 0.0469},  
     "orange": {"R": 0.6921, "G": 0.2253, "B": 0.0826},
     "yellow": {"R": 0.4914, "G": 0.4774, "B": 0.0313},
     "purple": {"R": 0.3972, "G": 0.3165, "B": 0.2863},
-    "white": {"R": 0.4158, "G": 0.4032, "B": 0.1810},  # Updated white values
-    "black": {"R": 0.3980, "G": 0.4418, "B": 0.1602},  # Updated black values
+    "white": {"R": 0.4158, "G": 0.4032, "B": 0.1810},  
+    "black": {"R": 0.3980, "G": 0.4418, "B": 0.1602},  
 }
 
 def normalize_rgb(raw_r, raw_g, raw_b):
