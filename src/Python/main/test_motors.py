@@ -1,4 +1,6 @@
-import motor
+from motor import MotorController
+
+MOTOR_CONTROLLER = MotorController()
 
 
 def individual_motor_test():
@@ -17,19 +19,19 @@ def rotation_test():
 
 def dispenser_motor_test():
     input("Press Enter to continue...")
-    motor.dispense()
+    MOTOR_CONTROLLER.dispense()
     input("Press Enter to continue...")
-    motor.dispense()
+    MOTOR_CONTROLLER.dispense()
     input("Press Enter to continue...")
-    motor.reset_dispenser()
+    MOTOR_CONTROLLER.reset_dispenser()
     input("Press Enter to continue...")
     return
 
 
 def main():
-    motor.init_motor(motor.MOTOR_RIGHT)
-    motor.init_motor(motor.MOTOR_LEFT)
-    motor.init_motor(motor.MOTOR_DISPENSER)
+    MOTOR_CONTROLLER.init_motor(motor.MOTOR_RIGHT)
+    MOTOR_CONTROLLER.init_motor(motor.MOTOR_LEFT)
+    MOTOR_CONTROLLER.init_motor(motor.MOTOR_DISPENSER)
 
     individual_motor_test()
     input("Press Enter to continue...")
