@@ -1,5 +1,4 @@
 from chassis import Chassis
-from extinguisher import Extinguisher
 from navigation import Navigation
 from sensors import SensorController
 from siren import Siren
@@ -12,7 +11,6 @@ class Robot:
     def __init__(self):
         self.state = "idle"
         self.chassis = Chassis()
-        self.extinguisher = Extinguisher()
         self.navigation = Navigation()
         self.sensors = SensorController()
         self.siren = Siren()
