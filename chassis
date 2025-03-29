@@ -139,13 +139,6 @@ class Chassis:
             self.MotorController.motor_right.set_power(0)
             raise
             
-    def move_one_tile(self):
-
-    
-
-
-        #Ralph
-
     def turn_right(self):
         """
         Executes a right turn operation.
