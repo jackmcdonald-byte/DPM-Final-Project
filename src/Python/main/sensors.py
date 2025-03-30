@@ -58,6 +58,7 @@ class SensorController:
         normalized_rgb = get_normalized_rgb()
         processor = colour_processing.ColourProcessing()
         return processor.identify_colour(normalized_rgb)
+        #RALPH
 
     def __get_colour_raw(self):
         """
@@ -70,6 +71,7 @@ class SensorController:
         """
         raw_rgb = get_raw_rgb()
         return raw_rgb
+        #RALPH
 
     def get_touch_sensor_state(self):
         """
@@ -85,6 +87,7 @@ class SensorController:
         """
         is_pressed = is_pressed()
         return is_pressed
+        #RALPH
 
     def get_us_sensor_distance(self):
         """
@@ -99,3 +102,4 @@ class SensorController:
         """
         distance = get_distance()
         return distance
+        #RALPH
