@@ -83,7 +83,8 @@ class SensorController:
         :rtype: bool
         Author: Jack McDonald
         """
-        pass
+        is_pressed = is_pressed()
+        return is_pressed
 
     def get_us_sensor_distance(self):
         """
