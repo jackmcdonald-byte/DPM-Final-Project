@@ -199,3 +199,15 @@ class MotorController:
             self.wait_for_motor(self.motor_dispenser)
         except IOError as error:
             print(error)
+
+    def move_forward(self):
+        self.motor_left.set_dps(self.FWD_SPEED)
+        self.motor_right.set_dps(self.FWD_SPEED)
+        self.motor_left.set_limits(self.POWER_LIMIT, self.FWD_SPEED)
+        self.motor_right.set_limits(self.POWER_LIMIT, self.FWD_SPEED)
+        self.motor_left.set_power(self.FWD_SPEED)
+        self.motor_right.set_power(self.FWD_SPEED)
+
+    def stop(self):
+        self.motor_left.set_power(0)
+        self.motor_right.set_power(0)

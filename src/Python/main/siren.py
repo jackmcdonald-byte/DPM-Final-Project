@@ -1,3 +1,5 @@
+from playsound import playsound
+
 class Siren:
     """
     Class representing a Siren functionality.

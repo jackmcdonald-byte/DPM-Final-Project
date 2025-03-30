@@ -1,3 +1,5 @@
+from Python.main import robot
+from robot import Robot
 from motor import MotorController
 
 
@@ -16,7 +18,7 @@ class Chassis:
     :type MotorController: MotorController
     Authors: Jack McDonald, Ralph Calabrese
     """
-    def __init__(self):
+    def __init__(self, robot: Robot):
         """
         Represents the main class responsible for initializing the 
         MotorController object. This class serves as the entry point 
@@ -29,6 +31,7 @@ class Chassis:
         Author: Jack McDonald
         """
         self.MotorController = MotorController()
+        self.robot = robot
 
     def move_until_colour(self, colour: str):
         """
@@ -45,20 +48,24 @@ class Chassis:
 
     def move_until_distance(self, distance: int):
         """
-        Move the robot until it covers the specified distance in centimeters.
-        
-        This method allows the robot to move forward until the specified
-        distance is reached. The distance is measured in centimeters and
-        converted internally to the units used by the robot's navigation system.
-        Ensure that appropriate conditions and validations are set for safe operation.
-        
-        :param distance: The distance in centimeters the robot should cover 
-                        before stopping.
+        Move the robot until the distance to an object is less than or equal to
+        the specified value in centimeters.
+
+        This method allows the robot to move forward until the distance
+        to an object falls below or equals the specified threshold. The
+        distance is measured in centimeters using the robot's sensors.
+
+        :param distance: The maximum distance in centimeters to an object
+                        before the robot should stop moving.
         :type distance: int
         :return: None
+        Author: Jack McDonald
         """
-        # TODO assigned to Ralph
-        pass
+
+        self.MotorController.move_forward()
+        while self.robot.get_distance() > distance:
+            pass
+        self.MotorController.stop()
 
     def move_one_tile(self):
         """
