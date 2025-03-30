@@ -55,7 +55,9 @@ class SensorController:
         :rtype: str
         Author: Jack McDonald
         """
-        pass
+        normalized_rgb = get_normalized_rgb()
+        processor = colour_processing.ColourProcessing()
+        return processor.identify_colour(normalized_rgb)
 
     def __get_colour_raw(self):
         """
