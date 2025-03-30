@@ -58,7 +58,7 @@ class Chassis:
     start_time = time.time()
     
     while True:
-        current_color = get_colour_name()  
+        current_color = colour_reading()  
         
         if current_color.lower() == colour.lower():
             print(f"Detected target color {colour} - stopping")
