@@ -50,36 +50,10 @@ class Chassis:
     :type colour: str
     :return: None
     """
-    # Start moving forward
-    self.MotorController.motor_left.set_dps(self.MotorController.FWD_SPEED)
-    self.MotorController.motor_right.set_dps(self.MotorController.FWD_SPEED)
-    
-    start_time = time.time()
-    color_found = False
-    timeout_occurred = False
-    
-    # Loop until color is found OR timeout occurs
-    while not color_found and not timeout_occurred:
-        current_color = colour_reading().lower()
-        target_color = colour.lower()
-        
-        if current_color == target_color:
-            color_found = True
-            print(f"Detected target color {colour} - stopping")
-        else:
-            # Check timeout condition
-            if time.time() - start_time > TIMEOUT:
-                timeout_occurred = True
-            else:
-                time.sleep(LINE_DETECT_DELAY)
-    
-    # Always stop motors after loop exits
+    self.MotorController.move_forward()
+    while self.robot.get_colour() != colour:
+        pass
     self.MotorController.stop()
-    
-    # Raise error if timeout occurred
-    if timeout_occurred:
-        raise TimeoutError(f"Color '{colour}' not detected within {TIMEOUT} seconds")
-
 
     def move_until_distance(self, distance: int):
         """
