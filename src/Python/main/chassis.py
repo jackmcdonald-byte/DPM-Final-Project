@@ -69,11 +69,7 @@ class Chassis:
         :type distance: int
         :return: None
         """
-        self.MotorController.move_distance_forward(
-            distance=distance * self.MotorController.MOVEMENT_CORRECTION_FACTOR,
-            speed=self.MotorController.FWD_SPEED
-        )
-        #Ralph
+        
 
     def move_one_tile(self):
     """
