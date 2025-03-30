@@ -86,9 +86,8 @@ class Chassis:
         :type distance: int
         :return: None
         """
-        distance_m = distance / 100  # convert cm to meters
         self.MotorController.move_distance_forward(
-            distance=distance_m * self.MotorController.MOVEMENT_CORRECTION_FACTOR,
+            distance=distance * self.MotorController.MOVEMENT_CORRECTION_FACTOR,
             speed=self.MotorController.FWD_SPEED
         )
         #Ralph
