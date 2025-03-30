@@ -100,26 +100,12 @@ class Chassis:
     :return: None
     :raises TimeoutError: If line isn't detected within reasonable time
     """        
-    try:
-        # Start movement
-        self.MotorController.motor_left.set_dps(self.MotorController.FWD_SPEED)
-        self.MotorController.motor_right.set_dps(self.MotorController.FWD_SPEED)
-
-        # Detect black line
-        start_time = time.time()
-        while True:
-            if get_colour_name().lower() == "black":
-                break
-                
-            if time.time() - start_time > TIMEOUT:
-                raise TimeoutError("Tile boundary not detected")
-            time.sleep(LINE_DETECT_DELAY)
-
-        # Move past the line
-        self.MotorController.move_distance_forward(
-            distance=OVERRUN_DISTANCE,
-            speed=self.MotorController.FWD_SPEED
-        )
+   try:
+        # Move forward until black line is detected
+        self.move_until_colour("black")
+        
+        # Move past the line by specified overrun distance
+        self.move_until_distance(OVERRUN_DISTANCE)  
 
     except Exception as e:
         self.MotorController.stop()
