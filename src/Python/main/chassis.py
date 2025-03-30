@@ -1,6 +1,6 @@
 from motor import MotorController
 import time
-#from color_processing import ColorSensor (PLACEHOLDER FOR ONCE JACK WRITES color_processing.py) 
+from sensors import get_colour_name()
 
 #define constants pertaining to robot turning (in the functions turn_right(), turn_left(), and turn_around())
 LEFT = 90 #positive constant for left turn
