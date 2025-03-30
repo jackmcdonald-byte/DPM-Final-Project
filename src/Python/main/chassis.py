@@ -43,10 +43,13 @@ class Chassis:
 
     def move_until_colour(self, colour: str):
     """
-    Moves the robot forward until the specified colour is detected.
-    
-    :param colour: The target colour (should match color names from get_colour_name())
-    :raises TimeoutError: If color isn't detected within reasonable time
+    Moves the robot until the specified colour is detected. The movement stops when the given
+    colour is identified. This function assumes a mechanism to detect colours and halts operation
+    when the desired condition is fulfilled.
+
+    :param colour: The target colour to be detected during the movement.
+    :type colour: str
+    :return: None
     """
     # Start moving forward
     self.MotorController.motor_left.set_dps(self.MotorController.FWD_SPEED)
