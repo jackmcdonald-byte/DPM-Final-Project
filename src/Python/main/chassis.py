@@ -8,9 +8,8 @@ RIGHT = -90 #negative constant for right turn
 AROUND = 180
 
 # Constants for movement tuning
-LINE_DETECT_DELAY = 0.1  # seconds between color checks
 OVERRUN_DISTANCE = 0.05   # meters to move past the line (adjust based on robot size)
-TIMEOUT = 10 #timeout constant for one tile forward move
+TIMEOUT = 5 #timeout constant for one tile forward move
 
 class Chassis:
     """
