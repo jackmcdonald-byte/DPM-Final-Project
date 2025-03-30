@@ -1,4 +1,4 @@
-from brick import TouchSensor, wait_ready_sensors
+from project.utils.brick import TouchSensor, wait_ready_sensors
 
 TOUCH_SENSOR = TouchSensor(1)
 wait_ready_sensors()

@@ -1,9 +1,10 @@
+import sys
+from threading import *
+
 from chassis import Chassis
 from navigation import Navigation
 from sensors import SensorController
 from siren import Siren
-
-import colour_processing
 
 
 class Robot:
@@ -53,6 +54,14 @@ class Robot:
         self.navigation = Navigation()
         self.sensors = SensorController()
         self.siren = Siren()
+
+        self.sensor_thread = None
+        self.emergency_stop_thread = None
+
+        self.colour_reading = ""
+        self.distance_reading = -1
+        self.touch_reading = False
+
         self.__create_threads()
 
     def run(self):
@@ -70,6 +79,10 @@ class Robot:
         """
         input("Press Enter to begin...")
         try:
+            self.__transition_to("initializing")
+            self.sensor_thread.start()
+            self.emergency_stop_thread.start()
+
             self.__transition_to("NavigationA")
             self.__enter_navigation_a()
 
@@ -92,6 +105,14 @@ class Robot:
         """
         try:
             self.__transition_to("idle")
+
+            # Wait for threads to terminate
+            if self.sensor_thread and self.sensor_thread.is_alive():
+                self.sensor_thread.join()
+            if self.emergency_stop_thread and self.emergency_stop_thread.is_alive():
+                self.emergency_stop_thread.join()
+
+            print("Robot stopped, threads terminated")
         except IOError as error:
             print(error)
 
@@ -109,17 +130,36 @@ class Robot:
         if self.state == "NavigationA":
             self.siren.play_siren()
         if self.state == "idle":
-            # TODO Stop all robot functions here
+            sys.exit() # TODO find better solution
             pass
 
     def __create_threads(self):
-        pass
+        self.sensor_thread = Thread(target=self.__update_sensor_data, daemon=True, name="sensors")
+        self.emergency_stop_thread = Thread(target=self.__emergency_stop_check, daemon=True, name="em._stop")
 
     def __enter_navigation_a(self):
-        pass
+        self.chassis.move_until_colour("yellow")
+        self.chassis.turn_right()
+        self.chassis.move_until_distance(25)
+        self.chassis.turn_left()
 
     def __enter_search(self):
         pass
 
     def __enter_navigation_b(self):
-        pass
+        self.chassis.move_until_colour("yellow")
+        self.chassis.turn_right()
+        self.chassis.move_until_distance(3)
+        self.chassis.turn_left()
+        self.chassis.move_until_distance(3)
+
+    def __update_sensor_data(self):
+        while self.state != "idle":
+            self.colour_reading = self.sensors.get_colour_name()
+            self.distance_reading = self.sensors.get_us_sensor_distance()
+            self.touch_reading = self.sensors.get_touch_sensor_state()
+
+    def __emergency_stop_check(self):
+        while self.state != "idle":
+            if self.touch_reading:
+                self.stop()
