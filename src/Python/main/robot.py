@@ -1,9 +1,10 @@
+import sys
+from threading import *
+
 from chassis import Chassis
 from navigation import Navigation
 from sensors import SensorController
 from siren import Siren
-
-import colour_processing
 
 
 class Robot:
@@ -53,6 +54,15 @@ class Robot:
         self.navigation = Navigation()
         self.sensors = SensorController()
         self.siren = Siren()
+
+        self.main_thread = None
+        self.sensor_thread = None
+        self.emergency_stop_thread = None
+
+        self.colour_reading = ""
+        self.distance_reading = -1
+        self.touch_reading = False
+
         self.__create_threads()
 
     def run(self):
@@ -109,11 +119,13 @@ class Robot:
         if self.state == "NavigationA":
             self.siren.play_siren()
         if self.state == "idle":
-            # TODO Stop all robot functions here
+            sys.exit()
             pass
 
     def __create_threads(self):
-        pass
+        self.main_thread = Thread(target=self.run, daemon=True).run()
+        self.sensor_thread = Thread(target=self.__update_sensor_data(), daemon=True).run()
+        self.emergency_stop_thread = Thread(target=self.__emergency_stop_check(), daemon=True).run()
 
     def __enter_navigation_a(self):
         pass
@@ -123,3 +135,14 @@ class Robot:
 
     def __enter_navigation_b(self):
         pass
+
+    def __update_sensor_data(self):
+        while self.state != "idle":
+            self.colour_reading = self.sensors.get_colour_name()
+            self.distance_reading = self.sensors.get_us_sensor_distance()
+            self.touch_reading = self.sensors.get_touch_sensor_state()
+
+    def __emergency_stop_check(self):
+        while self.state != "idle":
+            if self.touch_reading:
+                self.stop()

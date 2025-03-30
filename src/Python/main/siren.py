@@ -1,6 +1,3 @@
-from project.utils import sound
-
-
 class Siren:
     """
     Class representing a Siren functionality.
