@@ -68,7 +68,8 @@ class SensorController:
         :rtype: Any
         Author: Jack McDonald
         """
-        pass
+        raw_rgb = get_raw_rgb()
+        return raw_rgb
 
     def get_touch_sensor_state(self):
         """
