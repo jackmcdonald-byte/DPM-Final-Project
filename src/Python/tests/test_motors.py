@@ -1,4 +1,4 @@
-from motor import MotorController
+from Python.main.motor import MotorController
 
 MOTOR_CONTROLLER = MotorController()
 

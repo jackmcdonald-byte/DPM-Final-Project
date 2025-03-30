@@ -128,13 +128,20 @@ class Robot:
         self.emergency_stop_thread = Thread(target=self.__emergency_stop_check(), daemon=True).run()
 
     def __enter_navigation_a(self):
-        pass
+        self.chassis.move_until_colour("yellow")
+        self.chassis.turn_right()
+        self.chassis.move_until_distance(25)
+        self.chassis.turn_left()
 
     def __enter_search(self):
         pass
 
     def __enter_navigation_b(self):
-        pass
+        self.chassis.move_until_colour("yellow")
+        self.chassis.turn_right()
+        self.chassis.move_until_distance(3)
+        self.chassis.turn_left()
+        self.chassis.move_until_distance(3)
 
     def __update_sensor_data(self):
         while self.state != "idle":
