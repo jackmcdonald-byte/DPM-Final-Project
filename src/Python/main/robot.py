@@ -1,6 +1,5 @@
 import sys
 from threading import *
-
 from chassis import Chassis
 from navigation import Navigation
 from sensors import SensorController
@@ -50,7 +49,7 @@ class Robot:
             Controls the siren mechanism of the robot.
         """
         self.state = "idle"
-        self.chassis = Chassis()
+        self.chassis = Chassis(self)
         self.navigation = Navigation()
         self.sensors = SensorController()
         self.siren = Siren()
@@ -144,7 +143,12 @@ class Robot:
         self.chassis.turn_left()
 
     def __enter_search(self):
-        pass
+        # TODO temp code
+        while self.navigation.found < 2:
+            if self.colour_reading == "red":
+                self.chassis.extinguish_fire()
+                self.chassis.MotorController.move_distance_forward(20, 100)
+                self.navigation.found += 1
 
     def __enter_navigation_b(self):
         self.chassis.move_until_colour("yellow")
@@ -163,3 +167,6 @@ class Robot:
         while self.state != "idle":
             if self.touch_reading:
                 self.stop()
+
+    def get_distance(self):
+        return self.distance_reading
