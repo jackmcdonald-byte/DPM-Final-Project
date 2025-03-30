@@ -20,12 +20,14 @@ class ColourProcessing:
         "white": [0.4158, 0.4032, 0.1810],
         "black": [0.3980, 0.4418, 0.1602],
         }
+    #RALPH
 
     def _calculate_distance(self, color1, color2):
         """
         Calculate squared Euclidean distance between two RGB colors.
         """
         return sum((a - b) ** 2 for a, b in zip(color1, color2))
+    #RALPH
 
     def identify_colour(self, colour: list):
         """
@@ -52,4 +54,5 @@ class ColourProcessing:
         
         # Return the color with smallest distance
         return min(distances.items(), key=lambda x: x[1])[0]
+    #RALPH
 
