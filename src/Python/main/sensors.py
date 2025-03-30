@@ -69,9 +69,7 @@ class SensorController:
         :rtype: Any
         Author: Jack McDonald
         """
-        raw_rgb = get_raw_rgb()
-        return raw_rgb
-        #RALPH
+        return get_raw_rgb()
 
     def get_touch_sensor_state(self):
         """
@@ -85,9 +83,7 @@ class SensorController:
         :rtype: bool
         Author: Jack McDonald
         """
-        is_pressed = is_pressed()
-        return is_pressed
-        #RALPH
+        return is_pressed()
 
     def get_us_sensor_distance(self):
         """
@@ -100,6 +96,4 @@ class SensorController:
         :rtype: float
         Author: Jack McDonald
         """
-        distance = get_distance()
-        return distance
-        #RALPH
+        return get_distance()

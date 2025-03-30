@@ -170,3 +170,6 @@ class Robot:
 
     def get_distance(self):
         return self.distance_reading
+
+    def get_colour(self):
+        return self.colour_reading
