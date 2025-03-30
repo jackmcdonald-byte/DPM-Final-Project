@@ -1,6 +1,5 @@
 from typing import Literal
-from ...utils import brick
-from . import dummy
+from . import dummy, brick
 from .rmi import RemoteClient, RemoteServer, isrelatedclass
 
 

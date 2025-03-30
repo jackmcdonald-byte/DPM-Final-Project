@@ -1,10 +1,10 @@
-import sys
+from robot import Robot
 
-sys.path.append('../src')
-
-import utils.brick
 
 def main():
-    return
+    robot = Robot()
+    robot.run()
 
-main()
+
+if __name__ == '__main__':
+    main()
