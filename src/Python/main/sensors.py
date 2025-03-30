@@ -97,4 +97,5 @@ class SensorController:
         :rtype: float
         Author: Jack McDonald
         """
-        pass
+        distance = get_distance()
+        return distance
