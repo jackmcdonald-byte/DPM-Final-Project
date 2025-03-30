@@ -188,6 +188,4 @@ class Chassis:
         # Activate dispenser
         self.MotorController.dispense()
         
-        # Reset dispenser to original position
-        self.MotorController.reset_dispenser()
         #Ralph
