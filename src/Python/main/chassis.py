@@ -42,40 +42,35 @@ class Chassis:
         self.MotorController = MotorController()
 
     def move_until_colour(self, colour: str):
-        """
-        Moves the robot forward until the specified colour is detected.
+    """
+    Moves the robot forward until the specified colour is detected.
+    
+    :param colour: The target colour (should match color names from get_colour_name())
+    :raises TimeoutError: If color isn't detected within reasonable time
+    """
+    # Start moving forward
+    self.MotorController.motor_left.set_dps(self.MotorController.FWD_SPEED)
+    self.MotorController.motor_right.set_dps(self.MotorController.FWD_SPEED)
+    
+    # Create timeout variable for safety
+    start_time = time.time()
+    
+    while True:
+        current_color = get_colour_name()  
         
-        :param colour: The target colour (should match your color detection system's output)
-        :raises TimeoutError: If color isn't detected within reasonable time
-        """
-
-        #color_sensor = ColorSensor() (PLACEHOLDER)
-        
-        # Start moving forward
-        self.MotorController.motor_left.set_dps(self.MotorController.FWD_SPEED)
-        self.MotorController.motor_right.set_dps(self.MotorController.FWD_SPEED)
-        
-        # Create timeout variable for safety
-        start_time = time.time()
-        timeout = 10  # seconds
-        
-        while True:
-            #current_color = color_sensor.get_color()  (PLACEHOLDER)
+        if current_color.lower() == colour.lower():
+            print(f"Detected target color {colour} - stopping")
+            break
             
-            if current_color == colour:
-                 print(f"Detected target color {colour} - stopping")
-                 break
-                
-            if time.time() - start_time > timeout:
-                self.MotorController.motor_left.set_power(0)
-                self.MotorController.motor_right.set_power(0)
-                raise TimeoutError("Color not detected within timeout period")
-                
-            time.sleep(0.1)  # Don't check too frequently
-        
-        # Stop movement
-        self.MotorController.motor_left.set_power(0)
-        self.MotorController.motor_right.set_power(0)
+        if time.time() - start_time > TIMEOUT:
+            self.MotorController.stop()
+            raise TimeoutError(f"Color '{colour}' not detected within {TIMEOUT} seconds")
+            
+        time.sleep(LINE_DETECT_DELAY)
+    
+    # Stop movement
+    self.MotorController.stop()
+
 
     def move_until_distance(self, distance: int):
         """
@@ -99,45 +94,36 @@ class Chassis:
         #Ralph
 
     def move_one_tile(self):
-        """
-        Moves the robot one tile further in the current direction of movement by 
-        using the colour sensor to verify that has crossed a black line. 
-        This function assumes the robots's movement direction and its environment 
-        are predefined and does not take any argument.
+    """
+    Moves the robot one tile further by detecting and crossing a black line.
+    
+    :return: None
+    :raises TimeoutError: If line isn't detected within reasonable time
+    """        
+    try:
+        # Start movement
+        self.MotorController.motor_left.set_dps(self.MotorController.FWD_SPEED)
+        self.MotorController.motor_right.set_dps(self.MotorController.FWD_SPEED)
 
-        :return: None
-        :raises TimeoutError: If line isn't detected within reasonable time
-        """        
-        try:
-            # Initialize sensor (uncomment when color_processing.py is ready)
-            # from color_processing import ColorSensor
-            # color_sensor = ColorSensor()
+        # Detect black line
+        start_time = time.time()
+        while True:
+            if get_colour_name().lower() == "black":
+                break
+                
+            if time.time() - start_time > TIMEOUT:
+                raise TimeoutError("Tile boundary not detected")
+            time.sleep(LINE_DETECT_DELAY)
 
-            # Start movement
-            self.MotorController.motor_left.set_dps(self.MotorController.FWD_SPEED)
-            self.MotorController.motor_right.set_dps(self.MotorController.FWD_SPEED)
+        # Move past the line
+        self.MotorController.move_distance_forward(
+            distance=OVERRUN_DISTANCE,
+            speed=self.MotorController.FWD_SPEED
+        )
 
-            # Detect black line
-            start_time = time.time()
-            while True:
-                # Uncomment when sensor is available:
-                # if color_sensor.get_color() == "black":
-                #     break
-                    
-                if time.time() - start_time > TIMEOUT:
-                    raise TimeoutError("Tile boundary not detected")
-                time.sleep(LINE_DETECT_DELAY)
-
-            # Move past the line
-            self.MotorController.move_distance_forward(
-                distance=OVERRUN_DISTANCE,
-                speed=self.MotorController.FWD_SPEED
-            )
-
-        except Exception as e:
-            self.MotorController.motor_left.set_power(0)
-            self.MotorController.motor_right.set_power(0)
-            raise
+    except Exception as e:
+        self.MotorController.stop()
+        raise
             
     def turn_right(self):
         """
