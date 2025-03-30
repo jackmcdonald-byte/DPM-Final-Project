@@ -55,7 +55,6 @@ class Robot:
         self.sensors = SensorController()
         self.siren = Siren()
 
-        self.main_thread = None
         self.sensor_thread = None
         self.emergency_stop_thread = None
 
@@ -80,6 +79,10 @@ class Robot:
         """
         input("Press Enter to begin...")
         try:
+            self.__transition_to("initializing")
+            self.sensor_thread.start()
+            self.emergency_stop_thread.start()
+
             self.__transition_to("NavigationA")
             self.__enter_navigation_a()
 
@@ -102,6 +105,14 @@ class Robot:
         """
         try:
             self.__transition_to("idle")
+
+            # Wait for threads to terminate
+            if self.sensor_thread and self.sensor_thread.is_alive():
+                self.sensor_thread.join()
+            if self.emergency_stop_thread and self.emergency_stop_thread.is_alive():
+                self.emergency_stop_thread.join()
+
+            print("Robot stopped, threads terminated")
         except IOError as error:
             print(error)
 
@@ -119,13 +130,12 @@ class Robot:
         if self.state == "NavigationA":
             self.siren.play_siren()
         if self.state == "idle":
-            sys.exit()
+            sys.exit() # TODO find better solution
             pass
 
     def __create_threads(self):
-        self.main_thread = Thread(target=self.run, daemon=True).run()
-        self.sensor_thread = Thread(target=self.__update_sensor_data(), daemon=True).run()
-        self.emergency_stop_thread = Thread(target=self.__emergency_stop_check(), daemon=True).run()
+        self.sensor_thread = Thread(target=self.__update_sensor_data, daemon=True, name="sensors")
+        self.emergency_stop_thread = Thread(target=self.__emergency_stop_check, daemon=True, name="em._stop")
 
     def __enter_navigation_a(self):
         self.chassis.move_until_colour("yellow")
