@@ -1,0 +1,208 @@
+from motor import MotorController
+import time
+#from color_processing import ColorSensor (PLACEHOLDER FOR ONCE JACK WRITES color_processing.py) 
+
+#define constants pertaining to robot turning (in the functions turn_right(), turn_left(), and turn_around())
+LEFT = 90 #positive constant for left turn
+RIGHT = -90 #negative constant for right turn
+AROUND = 180
+
+# Constants for movement tuning
+LINE_DETECT_DELAY = 0.1  # seconds between color checks
+OVERRUN_DISTANCE = 0.05   # meters to move past the line (adjust based on robot size)
+TIMEOUT = 10 #timeout constant for one tile forward move
+
+class Chassis:
+    """
+    Manages the movement and control of a robotic chassis.
+
+    This class provides functionality to move the robot in various
+    ways, such as moving until a specific condition is met (e.g. a
+    particular color or distance), turning in different directions,
+    moving a set distance (one tile), and performing specialized
+    actions like fire extinguishment. It interfaces with the
+    MotorController for managing motor operations.
+
+    :ivar MotorController: Handles the motor operations for the chassis.
+    :type MotorController: MotorController
+    Authors: Jack McDonald, Ralph Calabrese
+    """
+    def __init__(self):
+        """
+        Represents the main class responsible for initializing the 
+        MotorController object. This class serves as the entry point 
+        to create an instance of the MotorController and link it 
+        to its functionalities.
+
+        :Attributes:
+            MotorController (MotorController): An instance of the 
+            MotorController class, initialized when creating this class.
+        Author: Jack McDonald
+        """
+        self.MotorController = MotorController()
+
+    def move_until_colour(self, colour: str):
+        """
+        Moves the robot forward until the specified colour is detected.
+        
+        :param colour: The target colour (should match your color detection system's output)
+        :raises TimeoutError: If color isn't detected within reasonable time
+        """
+
+        #color_sensor = ColorSensor() (PLACEHOLDER)
+        
+        # Start moving forward
+        self.MotorController.motor_left.set_dps(self.MotorController.FWD_SPEED)
+        self.MotorController.motor_right.set_dps(self.MotorController.FWD_SPEED)
+        
+        # Create timeout variable for safety
+        start_time = time.time()
+        timeout = 10  # seconds
+        
+        while True:
+            #current_color = color_sensor.get_color()  (PLACEHOLDER)
+            
+            if current_color == colour:
+                 print(f"Detected target color {colour} - stopping")
+                 break
+                
+            if time.time() - start_time > timeout:
+                self.MotorController.motor_left.set_power(0)
+                self.MotorController.motor_right.set_power(0)
+                raise TimeoutError("Color not detected within timeout period")
+                
+            time.sleep(0.1)  # Don't check too frequently
+        
+        # Stop movement
+        self.MotorController.motor_left.set_power(0)
+        self.MotorController.motor_right.set_power(0)
+
+    def move_until_distance(self, distance: int):
+        """
+        Move the robot until it covers the specified distance in centimeters.
+        
+        This method allows the robot to move forward until the specified
+        distance is reached. The distance is measured in centimeters and
+        converted internally to the units used by the robot's navigation system.
+        Ensure that appropriate conditions and validations are set for safe operation.
+        
+        :param distance: The distance in centimeters the robot should cover 
+                        before stopping.
+        :type distance: int
+        :return: None
+        """
+        distance_m = distance / 100  # convert cm to meters
+        self.MotorController.move_distance_forward(
+            distance=distance_m * self.MotorController.MOVEMENT_CORRECTION_FACTOR,
+            speed=self.MotorController.FWD_SPEED
+        )
+        #Ralph
+
+    def move_one_tile(self):
+        """
+        Moves the robot one tile further in the current direction of movement by 
+        using the colour sensor to verify that has crossed a black line. 
+        This function assumes the robots's movement direction and its environment 
+        are predefined and does not take any argument.
+
+        :return: None
+        :raises TimeoutError: If line isn't detected within reasonable time
+        """        
+        try:
+            # Initialize sensor (uncomment when color_processing.py is ready)
+            # from color_processing import ColorSensor
+            # color_sensor = ColorSensor()
+
+            # Start movement
+            self.MotorController.motor_left.set_dps(self.MotorController.FWD_SPEED)
+            self.MotorController.motor_right.set_dps(self.MotorController.FWD_SPEED)
+
+            # Detect black line
+            start_time = time.time()
+            while True:
+                # Uncomment when sensor is available:
+                # if color_sensor.get_color() == "black":
+                #     break
+                    
+                if time.time() - start_time > TIMEOUT:
+                    raise TimeoutError("Tile boundary not detected")
+                time.sleep(LINE_DETECT_DELAY)
+
+            # Move past the line
+            self.MotorController.move_distance_forward(
+                distance=OVERRUN_DISTANCE,
+                speed=self.MotorController.FWD_SPEED
+            )
+
+        except Exception as e:
+            self.MotorController.motor_left.set_power(0)
+            self.MotorController.motor_right.set_power(0)
+            raise
+            
+    def turn_right(self):
+        """
+        Executes a right turn operation.
+    
+        This method turns the robot's chassis to the right by adjusting
+        the motor's power and operation. The robot's environment and
+        movement are assumed to allow for a smooth turn without obstacles.
+        
+        :return: None
+        """
+        self.MotorController.rotate(
+            angle=RIGHT,  
+            speed=self.MotorController.TRN_SPEED
+        )
+        #Ralph
+
+    def turn_left(self):
+        """
+        Executes a left turn operation.
+    
+        This method turns the robot's chassis to the left by adjusting 
+        the motor system. Ensure the path is clear before invoking this 
+        function to avoid collisions.
+        
+        :return: None
+        """
+        self.MotorController.rotate(
+            angle=LEFT,  
+            speed=self.MotorController.TRN_SPEED
+        )
+
+        #Ralph
+
+    def turn_around(self):
+        """
+        Rotates the robot by 180 degrees.
+    
+        This method enables a complete 180-degree turn for the robot,
+        effectively reversing its current direction of travel. This is 
+        useful in scenarios where the robot needs to retrace its path.
+        
+        :return: None
+        """
+        self.MotorController.rotate(
+            angle=AROUND,
+            speed=self.MotorController.TRN_SPEED
+        )
+
+        #Ralph
+
+    def extinguish_fire(self):
+        """
+        Activates the fire extinguisher mechanism.
+    
+        This method is responsible for initiating the robot's fire suppression
+        system. Ensure that the fire detection mechanism has identified the 
+        fire's location before triggering this function.
+        
+        :return: None
+        """
+        # Activate dispenser
+        self.MotorController.dispense()
+        
+        # Reset dispenser to original position
+        self.MotorController.reset_dispenser()
+        #Ralph
+        
