@@ -41,11 +41,17 @@ class Siren:
         Author: Jack McDonald
         """
         if not self.is_active:
-
             self.is_active = True
-            self.sound.tone(1000, 300)  
-            self.sound.tone(1500, 300) 
+            # Play a tone at 1000Hz for 300ms
+            self.sound.set_pitch(1000)  # Set pitch/frequency to 1000Hz
+            self.sound.update_duration(0.3)  # Set duration to 300ms
+            self.sound.play()
 
+        # Play another tone at 1500Hz for 300ms
+            self.sound.set_pitch(1500)  # Set pitch/frequency to 1500Hz
+            self.sound.update_duration(0.3)  # Set duration to 300ms
+            self.sound.play()
+        
     def stop_siren(self):
         """
         Stops the currently active siren.
@@ -58,3 +64,4 @@ class Siren:
         Author: Jack McDonald
         """
         self.is_active = False
+        self.sound.stop() 
