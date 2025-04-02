@@ -1,18 +1,14 @@
-from robot import Robot
 from motor import MotorController
 import time
 
-# define constants pertaining to robot turning (in the functions turn_right(), turn_left(), and turn_around())
-LEFT = 90  # positive constant for left turn
-RIGHT = -90  # negative constant for right turn
+#define constants pertaining to robot turning (in the functions turn_right(), turn_left(), and turn_around())
+LEFT = 90 #positive constant for left turn
+RIGHT = -90 #negative constant for right turn
 AROUND = 180
 
 # Constants for movement tuning
-OVERRUN_DISTANCE = 15  # cms to move past the line (adjust based on robot size)
-HALF_TILE_DISTANCE = 15 # cms to move backwards after stopping when purple
-is detected (adjust given tile size)
-TIMEOUT = 5  # timeout constant for one tile forward move
-
+OVERRUN_DISTANCE = 15   # meters to move past the line (adjust based on robot size)
+TIMEOUT = 5 #timeout constant for one tile forward move
 
 class Chassis:
     """
@@ -29,9 +25,7 @@ class Chassis:
     :type MotorController: MotorController
     Authors: Jack McDonald, Ralph Calabrese
     """
-
     def __init__(self, robot):
-
         """
         Represents the main class responsible for initializing the 
         MotorController object. This class serves as the entry point 
@@ -45,6 +39,21 @@ class Chassis:
         """
         self.MotorController = MotorController()
         self.robot = robot
+
+    def move_until_colour(self, colour: str):
+        """
+        Moves the robot until the specified colour is detected. The movement stops when the given
+        colour is identified. This function assumes a mechanism to detect colours and halts operation
+        when the desired condition is fulfilled.
+
+        :param colour: The target colour to be detected during the movement.
+        :type colour: str
+        :return: None
+        """
+        self.MotorController.move_forward()
+        while self.robot.get_colour() != colour:
+            pass
+        self.MotorController.stop()
 
     def move_until_distance(self, distance: int):
         """
@@ -66,22 +75,6 @@ class Chassis:
         while self.robot.get_distance() > distance:
             pass
         self.MotorController.stop()
-
-    def move_until_colour(self, colour: str):
-        """
-        Moves the robot until the specified colour is detected. The movement stops when the given
-        colour is identified. This function assumes a mechanism to detect colours and halts operation
-        when the desired condition is fulfilled.
-
-        :param colour: The target colour to be detected during the movement.
-        :type colour: str
-        :return: None
-        """
-        self.MotorController.move_forward()
-        while self.robot.get_colour() != colour:
-            pass
-        self.MotorController.stop()
-        self.move_until_distance(-HALF_TILE_DISTANCE)
 
     def move_one_tile(self):
         """
@@ -112,7 +105,7 @@ class Chassis:
             angle=RIGHT,
             speed=self.MotorController.TRN_SPEED
         )
-        # Ralph
+        #Ralph
 
     def turn_left(self):
         """
@@ -129,7 +122,7 @@ class Chassis:
             speed=self.MotorController.TRN_SPEED
         )
 
-        # Ralph
+        #Ralph
 
     def turn_around(self):
         """
@@ -146,7 +139,7 @@ class Chassis:
             speed=self.MotorController.TRN_SPEED
         )
 
-        # Ralph
+        #Ralph
 
     def extinguish_fire(self):
         """
@@ -160,6 +153,8 @@ class Chassis:
         """
         # Activate dispenser
         self.MotorController.dispense()
+
+        #Ralph
 
 
         #Ralph
