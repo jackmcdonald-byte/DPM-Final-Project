@@ -9,6 +9,7 @@ AROUND = 180
 # Constants for movement tuning
 OVERRUN_DISTANCE = 15   # meters to move past the line (adjust based on robot size)
 TIMEOUT = 5 #timeout constant for one tile forward move
+HALF_TILE_DISTANCE = 15 
 
 class Chassis:
     """
@@ -75,6 +76,7 @@ class Chassis:
         while self.robot.get_colour() != colour:
             pass
         self.MotorController.stop()
+        self.move_until_distance(-HALF_TILE_DISTANCE)
 
     def move_one_tile(self):
         """
