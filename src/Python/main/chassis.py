@@ -1,15 +1,17 @@
+from Python.main import robot
+from robot import Robot
 from motor import MotorController
 import time
-from robot import Robot
 
-#define constants pertaining to robot turning (in the functions turn_right(), turn_left(), and turn_around())
-LEFT = 90 #positive constant for left turn
-RIGHT = -90 #negative constant for right turn
+# define constants pertaining to robot turning (in the functions turn_right(), turn_left(), and turn_around())
+LEFT = 90  # positive constant for left turn
+RIGHT = -90  # negative constant for right turn
 AROUND = 180
 
 # Constants for movement tuning
-OVERRUN_DISTANCE = 15   # meters to move past the line (adjust based on robot size)
-TIMEOUT = 5 #timeout constant for one tile forward move
+OVERRUN_DISTANCE = 15  # meters to move past the line (adjust based on robot size)
+TIMEOUT = 5  # timeout constant for one tile forward move
+
 
 class Chassis:
     """
@@ -26,7 +28,8 @@ class Chassis:
     :type MotorController: MotorController
     Authors: Jack McDonald, Ralph Calabrese
     """
-        def __init__(self, robot: Robot):
+
+    def __init__(self, robot: Robot):
         """
         Represents the main class responsible for initializing the 
         MotorController object. This class serves as the entry point 
@@ -71,6 +74,7 @@ class Chassis:
         :return: None
         Author: Jack McDonald
         """
+
         self.MotorController.move_forward()
         while self.robot.get_distance() > distance:
             pass
@@ -80,21 +84,17 @@ class Chassis:
         """
         Moves the robot one tile further in the current direction of movement by 
         using the colour sensor to verify that has crossed a black line. 
-        This function assumes the robot's movement direction and its environment 
+        This function assumes the robot's movement direction and its environment
         are predefined and does not take any argument.
 
         :return: None
-        """      
-        try:
-            # Move forward until black line is detected
-            self.move_until_colour("black")
-        
-            # Move past the line by specified overrun distance
-            self.move_until_distance(OVERRUN_DISTANCE)  
+        """
+        # Move forward until black line is detected
+        self.move_until_colour("black")
 
-         except Exception as e:
-            self.MotorController.stop()
-            
+        # Move past the line by specified overrun distance
+        self.move_until_distance(OVERRUN_DISTANCE)
+
     def turn_right(self):
         """
         Executes a right turn operation.
@@ -106,10 +106,10 @@ class Chassis:
         :return: None
         """
         self.MotorController.rotate(
-            angle=RIGHT,  
+            angle=RIGHT,
             speed=self.MotorController.TRN_SPEED
         )
-        #Ralph
+        # Ralph
 
     def turn_left(self):
         """
@@ -122,11 +122,11 @@ class Chassis:
         :return: None
         """
         self.MotorController.rotate(
-            angle=LEFT,  
+            angle=LEFT,
             speed=self.MotorController.TRN_SPEED
         )
 
-        #Ralph
+        # Ralph
 
     def turn_around(self):
         """
@@ -143,7 +143,7 @@ class Chassis:
             speed=self.MotorController.TRN_SPEED
         )
 
-        #Ralph
+        # Ralph
 
     def extinguish_fire(self):
         """
@@ -157,5 +157,5 @@ class Chassis:
         """
         # Activate dispenser
         self.MotorController.dispense()
-        
-        #Ralph
+
+        # Ralph
