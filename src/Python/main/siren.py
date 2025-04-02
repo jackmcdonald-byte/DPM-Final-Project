@@ -1,4 +1,4 @@
-from playsound import playsound
+from utils.sound import Sound
 
 class Siren:
     """
@@ -25,6 +25,7 @@ class Siren:
         Author: Jack McDonald
         """
         self.is_active = False
+        self.sound = Sound() 
 
     def play_siren(self):
         """
@@ -39,7 +40,11 @@ class Siren:
 
         Author: Jack McDonald
         """
-        pass
+        if not self.is_active:
+
+            self.is_active = True
+            self.sound.tone(1000, 300)  
+            self.sound.tone(1500, 300) 
 
     def stop_siren(self):
         """
@@ -52,4 +57,4 @@ class Siren:
 
         Author: Jack McDonald
         """
-        pass
+        self.is_active = False
