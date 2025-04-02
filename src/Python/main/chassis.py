@@ -1,17 +1,14 @@
-from robot import Robot
 from motor import MotorController
 import time
 
-# define constants pertaining to robot turning (in the functions turn_right(), turn_left(), and turn_around())
-LEFT = 90  # positive constant for left turn
-RIGHT = -90  # negative constant for right turn
+#define constants pertaining to robot turning (in the functions turn_right(), turn_left(), and turn_around())
+LEFT = 90 #positive constant for left turn
+RIGHT = -90 #negative constant for right turn
 AROUND = 180
 
 # Constants for movement tuning
-OVERRUN_DISTANCE = 15  # cms to move past the line (adjust based on robot size)
-HALF_TILE_DISTANCE = 15 # cms to move backwards after stopping when purple is detected (adjust given tile size)
-TIMEOUT = 5  # timeout constant for one tile forward move
-
+OVERRUN_DISTANCE = 15   # meters to move past the line (adjust based on robot size)
+TIMEOUT = 5 #timeout constant for one tile forward move
 
 class Chassis:
     """
@@ -28,7 +25,6 @@ class Chassis:
     :type MotorController: MotorController
     Authors: Jack McDonald, Ralph Calabrese
     """
-
     def __init__(self, robot):
         """
         Represents the main class responsible for initializing the 
@@ -80,7 +76,6 @@ class Chassis:
             pass
         self.MotorController.stop()
 
-        
     def move_one_tile(self):
         """
         Moves the robot one tile further in the current direction of movement by 
@@ -110,7 +105,7 @@ class Chassis:
             angle=RIGHT,
             speed=self.MotorController.TRN_SPEED
         )
-        # Ralph
+        #Ralph
 
     def turn_left(self):
         """
@@ -127,7 +122,7 @@ class Chassis:
             speed=self.MotorController.TRN_SPEED
         )
 
-        # Ralph
+        #Ralph
 
     def turn_around(self):
         """
@@ -144,7 +139,7 @@ class Chassis:
             speed=self.MotorController.TRN_SPEED
         )
 
-        # Ralph
+        #Ralph
 
     def extinguish_fire(self):
         """
@@ -159,4 +154,4 @@ class Chassis:
         # Activate dispenser
         self.MotorController.dispense()
 
-        # Ralph
+        #Ralph
