@@ -1,4 +1,3 @@
-from Python.main import robot
 from robot import Robot
 from motor import MotorController
 import time
