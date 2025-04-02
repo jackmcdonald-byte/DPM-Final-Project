@@ -30,7 +30,7 @@ class Chassis:
     Authors: Jack McDonald, Ralph Calabrese
     """
 
-    def __init__(self, robot: Robot):
+    def __init__(self, robot):
         """
         Represents the main class responsible for initializing the 
         MotorController object. This class serves as the entry point 
