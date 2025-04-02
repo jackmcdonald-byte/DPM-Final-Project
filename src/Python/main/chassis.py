@@ -80,7 +80,7 @@ class Chassis:
         while self.robot.get_colour() != colour:
             pass
         self.MotorController.stop()
-        self.move_until_distance(HALF_TILE_DISTANCE)
+        self.move_until_distance(-HALF_TILE_DISTANCE)
 
     def move_one_tile(self):
         """
