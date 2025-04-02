@@ -42,14 +42,12 @@ class Siren:
         """
         if not self.is_active:
             self.is_active = True
-            # Play a tone at 1000Hz for 300ms
-            self.sound.set_pitch(1000)  # Set pitch/frequency to 1000Hz
-            self.sound.update_duration(0.3)  # Set duration to 300ms
+            self.sound.set_pitch(1000)  
+            self.sound.update_duration(0.3)  
             self.sound.play()
 
-        # Play another tone at 1500Hz for 300ms
-            self.sound.set_pitch(1500)  # Set pitch/frequency to 1500Hz
-            self.sound.update_duration(0.3)  # Set duration to 300ms
+            self.sound.set_pitch(1500)  
+            self.sound.update_duration(0.3)  
             self.sound.play()
         
     def stop_siren(self):
