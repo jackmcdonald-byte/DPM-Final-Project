@@ -9,7 +9,8 @@ RIGHT = -90  # negative constant for right turn
 AROUND = 180
 
 # Constants for movement tuning
-OVERRUN_DISTANCE = 15  # meters to move past the line (adjust based on robot size)
+OVERRUN_DISTANCE = 15  # cms to move past the line (adjust based on robot size)
+HALF_TILE_DISTANCE = 15 # cms to move backwards after stopping when purple is detected (adjust given tile size)
 TIMEOUT = 5  # timeout constant for one tile forward move
 
 
@@ -79,6 +80,7 @@ class Chassis:
         while self.robot.get_colour() != colour:
             pass
         self.MotorController.stop()
+        self.move_until_distance(HALF_TILE_DISTANCE)
 
     def move_one_tile(self):
         """
