@@ -61,5 +61,7 @@ class Siren:
 
         Author: Jack McDonald
         """
+
         self.is_active = False
         self.sound.stop()
+        pass
