@@ -1,6 +1,6 @@
-from brick import EV3UltrasonicSensor, wait_ready_sensors
+from project.utils.brick import EV3UltrasonicSensor, wait_ready_sensors
 
-us_sensor = EV3UltrasonicSensor(3)
+us_sensor = EV3UltrasonicSensor(1)
 wait_ready_sensors()
 
 

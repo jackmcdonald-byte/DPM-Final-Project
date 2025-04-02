@@ -1,4 +1,4 @@
-from brick import EV3ColorSensor, wait_ready_sensors
+from project.utils.brick import EV3ColorSensor, wait_ready_sensors
 
 COLOUR_SENSOR = EV3ColorSensor(2)
 wait_ready_sensors()
