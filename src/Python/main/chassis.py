@@ -44,6 +44,21 @@ class Chassis:
         self.MotorController = MotorController()
         self.robot = robot
 
+    def move_until_colour(self, colour: str):
+        """
+        Moves the robot until the specified colour is detected. The movement stops when the given
+        colour is identified. This function assumes a mechanism to detect colours and halts operation
+        when the desired condition is fulfilled.
+
+        :param colour: The target colour to be detected during the movement.
+        :type colour: str
+        :return: None
+        """
+        self.MotorController.move_forward()
+        while self.robot.get_colour() != colour:
+            pass
+        self.MotorController.stop()
+
     def move_until_distance(self, distance: int):
         """
         Move the robot until the distance to an object is less than or equal to
@@ -65,21 +80,6 @@ class Chassis:
             pass
         self.MotorController.stop()
 
-    def move_until_colour(self, colour: str):
-        """
-        Moves the robot until the specified colour is detected. The movement stops when the given
-        colour is identified. This function assumes a mechanism to detect colours and halts operation
-        when the desired condition is fulfilled.
-
-        :param colour: The target colour to be detected during the movement.
-        :type colour: str
-        :return: None
-        """
-        self.MotorController.move_forward()
-        while self.robot.get_colour() != colour:
-            pass
-        self.MotorController.stop()
-        self.move_until_distance(-HALF_TILE_DISTANCE)
         
     def move_one_tile(self):
         """
