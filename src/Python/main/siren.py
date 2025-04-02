@@ -1,4 +1,4 @@
-from utils.sound import Sound
+from project.utils.sound import Sound
 
 class Siren:
     """
@@ -25,7 +25,7 @@ class Siren:
         Author: Jack McDonald
         """
         self.is_active = False
-        self.sound = Sound() 
+        self.sound = Sound()
 
     def play_siren(self):
         """
@@ -40,16 +40,16 @@ class Siren:
 
         Author: Jack McDonald
         """
-        if not self.is_active:
-            self.is_active = True
-            self.sound.set_pitch(1000)  
-            self.sound.update_duration(0.3)  
-            self.sound.play()
-
-            self.sound.set_pitch(1500)  
-            self.sound.update_duration(0.3)  
-            self.sound.play()
+        HIGH_SOUND = self.sound(duration=0.3, pitch="E5", volume=100)
+        LOW_SOUND = self.sound(duration=0.3, pitch="C5", volume=100)
+        self.is_active = True
+        while self.is_active:
+            HIGH_SOUND.play()
+            HIGH_SOUND.wait_done()
+            LOW_SOUND.play()
+            LOW_SOUND.wait_done()
         
+
     def stop_siren(self):
         """
         Stops the currently active siren.
@@ -62,4 +62,4 @@ class Siren:
         Author: Jack McDonald
         """
         self.is_active = False
-        self.sound.stop() 
+        self.sound.stop()
