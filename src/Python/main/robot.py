@@ -145,7 +145,7 @@ class Robot:
     def __enter_search(self):
         self.chassis.move_until_distance(7) # colour sensor is 13 cm from wall
         self.chassis.turn_left()
-        self.chassis.move_distance_forward(24)
+        self.chassis.move_distance_forward(0.24)
         self.chassis.turn_degrees(180)
 
         x_interval = 6
@@ -160,14 +160,14 @@ class Robot:
                 if self.navigation.found >= 2:
                     # TODO stop early
                     pass
-                self.chassis.move_distance_forward(6)
+                self.chassis.move_distance_forward(0.06)
                 x += 1 * (-1 + 2 * facing_east)
             self.navigation.sweep(bool (i % 2))
             if self.navigation.found >= 2:
                 # TODO stop early
                 pass
             self.chassis.turn_degrees(90 * (1 - 2 * (i % 2)))
-            self.chassis.move_distance_forward(11)
+            self.chassis.move_distance_forward(0.11)
             self.chassis.turn_degrees(90 * (1 - 2 * (i % 2)))
             facing_east = not facing_east
         for j in range(8):
@@ -175,11 +175,11 @@ class Robot:
             if self.navigation.found >= 2:
                 # TODO stop early
                 pass
-            self.chassis.move_distance_forward(6)
+            self.chassis.move_distance_forward(0.06)
             x += 1 * (-1 + 2 * facing_east)
         self.navigation.sweep(False)
         self.chassis.turn_around()
-        self.chassis.move_distance_forward(24)
+        self.chassis.move_distance_forward(0.24)
         self.chassis.turn_left()
 
 
@@ -195,6 +195,7 @@ class Robot:
             self.colour_reading = self.sensors.get_colour_name()
             self.distance_reading = self.sensors.get_us_sensor_distance()
             self.touch_reading = self.sensors.get_touch_sensor_state()
+            print(self.colour_reading)
 
     def __emergency_stop_check(self):
         while self.state != "idle":

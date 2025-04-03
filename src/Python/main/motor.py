@@ -122,6 +122,7 @@ class MotorController:
         Author: Jack McDonald
         """
         try:
+            speed *= 5
             self.motor_left.set_dps(speed * self.LEFT_MOTOR_CORRECTION_FACTOR)
             self.motor_right.set_dps(speed)
             self.motor_left.set_limits(self.POWER_LIMIT, speed)
@@ -150,6 +151,7 @@ class MotorController:
         Author: Jack McDonald
         """
         try:
+            speed *= 2
             angle = angle * self.MOVEMENT_CORRECTION_FACTOR
             self.motor_left.set_dps(speed * self.LEFT_MOTOR_CORRECTION_FACTOR )
             self.motor_right.set_dps(speed)
