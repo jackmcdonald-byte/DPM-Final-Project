@@ -165,6 +165,7 @@ class Chassis:
         self.MotorController.move_distance_forward(distance=-EXTINGUISH_DISTANCE,
                                                    speed=self.MotorController.FWD_SPEED)
         self.MotorController.dispense()
+        input("Press Enter to continue...")
         self.MotorController.move_distance_forward(distance=EXTINGUISH_DISTANCE,
                                                    speed=self.MotorController.FWD_SPEED)
 

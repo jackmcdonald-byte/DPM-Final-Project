@@ -57,11 +57,11 @@ class Navigation:
         self.robot = robot
 
     def sweep(self, direction: bool):
-        for i in range(18): # MAY NEED TO ADJUST IF IT DETECTS THE SAME FIRE > ONCE
-            self.chassis.turn_degrees(20 * (1 - (2 * direction)))
+        for i in range(9): # MAY NEED TO ADJUST IF IT DETECTS THE SAME FIRE > ONCE
+            self.chassis.turn_degrees(40 * (1 - (2 * direction)))
             if self.robot.get_colour() == "red":
                 self.chassis.extinguish_fire()
                 self.found += 1
-                self.chassis.turn_degrees((17 - i) * 20 * (1 - (2 * direction)))
+                self.chassis.turn_degrees((8 - i) * 20 * (1 - (2 * direction)))
                 break
 

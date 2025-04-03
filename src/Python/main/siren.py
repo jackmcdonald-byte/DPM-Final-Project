@@ -13,6 +13,7 @@ class Siren:
 
     Author: Jack McDonald
     """
+    FILE_NAME = "siren.wav"
 
     def __init__(self):
         """

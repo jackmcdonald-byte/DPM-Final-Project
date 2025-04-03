@@ -41,8 +41,8 @@ class MotorController:
     ORIENTATION_TO_DEGREES = AXLE_LENGTH / WHEEL_RADIUS  # scale factor for rotation
     DISPENSER_TURN_ANGLE = -51
 
-    MOVEMENT_CORRECTION_FACTOR = 1.05
-    LEFT_MOTOR_CORRECTION_FACTOR = 1.068
+    MOVEMENT_CORRECTION_FACTOR = 1.06
+    LEFT_MOTOR_CORRECTION_FACTOR = 1.02
 
     def __init__(self):
         """
@@ -122,7 +122,7 @@ class MotorController:
         Author: Jack McDonald
         """
         try:
-            speed *= 5
+            speed *= 2
             self.motor_left.set_dps(speed * self.LEFT_MOTOR_CORRECTION_FACTOR)
             self.motor_right.set_dps(speed)
             self.motor_left.set_limits(self.POWER_LIMIT, speed)
@@ -151,7 +151,7 @@ class MotorController:
         Author: Jack McDonald
         """
         try:
-            speed *= 2
+            speed *= 1.5
             angle = angle * self.MOVEMENT_CORRECTION_FACTOR
             self.motor_left.set_dps(speed * self.LEFT_MOTOR_CORRECTION_FACTOR )
             self.motor_right.set_dps(speed)

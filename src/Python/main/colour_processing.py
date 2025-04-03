@@ -12,6 +12,12 @@ class ColourProcessing:
         # Predefined color reference data (normalized RGB)
         self.COLOR_REF = {
             "black": [8.53, 9.47, 3.47],
+            "black": [40, 40, 15],
+            "black": [17, 22, 6],
+            "grey": [60, 60, 20],
+            "grey": [94, 52, 46],
+            "grey": [86, 44, 38],
+            "grey": [80, 84, 31],
             "green": [125.60, 177.80, 14.93],
             "orange": [214.40, 75.67, 13.60],
             "purple": [90.87, 48.13, 42.20],
@@ -25,7 +31,7 @@ class ColourProcessing:
         """
         Calculate squared Euclidean distance between two RGB colors.
         """
-        return sum((a - b) ** 2 for a, b in zip(color1, color2))
+        return ((color1[0] - color2[0]) ** 2 + (color1[1] - color2[1]) ** 2 + (color1[2] - color2[2]) ** 2) ** 0.5
     #RALPH
 
     def identify_colour(self, colour: list):
