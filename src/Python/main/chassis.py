@@ -2,12 +2,14 @@ from motor import MotorController
 import time
 
 # define constants pertaining to robot turning (in the functions turn_right(), turn_left(), and turn_around())
-LEFT = 90  # positive constant for left turn
-RIGHT = -90  # negative constant for right turn
+LEFT = -90  # positive constant for left turn
+RIGHT = 90  # negative constant for right turn
 AROUND = 180
 
 # Constants for movement tuning
 OVERRUN_DISTANCE = 15  # meters to move past the line (adjust based on robot size)
+ROLLBACK_DISTANCE = 0.05
+EXTINGUISH_DISTANCE = 2
 TIMEOUT = 5  # timeout constant for one tile forward move
 
 
@@ -60,6 +62,8 @@ class Chassis:
         while self.robot.get_colour() != colour:
             pass
         self.MotorController.stop()
+        self.MotorController.move_distance_forward(distance=-ROLLBACK_DISTANCE,
+                                          speed=self.MotorController.FWD_SPEED)
 
     def move_until_distance(self, distance: int):
         """
@@ -158,6 +162,16 @@ class Chassis:
         :return: None
         """
         # Activate dispenser
+        self.MotorController.move_distance_forward(distance=-EXTINGUISH_DISTANCE,
+                                                   speed=self.MotorController.FWD_SPEED)
         self.MotorController.dispense()
+        self.MotorController.move_distance_forward(distance=EXTINGUISH_DISTANCE,
+                                                   speed=self.MotorController.FWD_SPEED)
 
         # Ralph
+
+    def move_distance_forward(self, distance: int):
+        self.MotorController.move_distance_forward(distance=distance, speed=self.MotorController.FWD_SPEED)
+
+    def turn_degrees(self, degrees: int):
+        self.MotorController.rotate(angle=degrees, speed=self.MotorController.TRN_SPEED)

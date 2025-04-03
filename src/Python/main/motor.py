@@ -39,9 +39,10 @@ class MotorController:
 
     DISTANCE_TO_DEGREES = 180 / (pi * WHEEL_RADIUS)  # scale factor for distance
     ORIENTATION_TO_DEGREES = AXLE_LENGTH / WHEEL_RADIUS  # scale factor for rotation
-    DISPENSER_TURN_ANGLE = -47
+    DISPENSER_TURN_ANGLE = -51
 
-    MOVEMENT_CORRECTION_FACTOR = 1
+    MOVEMENT_CORRECTION_FACTOR = 1.05
+    LEFT_MOTOR_CORRECTION_FACTOR = 1.068
 
     def __init__(self):
         """
@@ -121,7 +122,7 @@ class MotorController:
         Author: Jack McDonald
         """
         try:
-            self.motor_left.set_dps(speed)
+            self.motor_left.set_dps(speed * self.LEFT_MOTOR_CORRECTION_FACTOR)
             self.motor_right.set_dps(speed)
             self.motor_left.set_limits(self.POWER_LIMIT, speed)
             self.motor_right.set_limits(self.POWER_LIMIT, speed)
@@ -149,7 +150,8 @@ class MotorController:
         Author: Jack McDonald
         """
         try:
-            self.motor_left.set_dps(speed)
+            angle = angle * self.MOVEMENT_CORRECTION_FACTOR
+            self.motor_left.set_dps(speed * self.LEFT_MOTOR_CORRECTION_FACTOR )
             self.motor_right.set_dps(speed)
             self.motor_left.set_limits(self.POWER_LIMIT, speed)
             self.motor_right.set_limits(self.POWER_LIMIT, speed)
@@ -201,12 +203,12 @@ class MotorController:
             print(error)
 
     def move_forward(self):
-        self.motor_left.set_dps(self.FWD_SPEED)
+        self.motor_left.set_dps(self.FWD_SPEED * self.LEFT_MOTOR_CORRECTION_FACTOR)
         self.motor_right.set_dps(self.FWD_SPEED)
         self.motor_left.set_limits(self.POWER_LIMIT, self.FWD_SPEED)
         self.motor_right.set_limits(self.POWER_LIMIT, self.FWD_SPEED)
-        self.motor_left.set_power(self.FWD_SPEED)
-        self.motor_right.set_power(self.FWD_SPEED)
+        self.motor_left.set_power(20 * self.LEFT_MOTOR_CORRECTION_FACTOR)
+        self.motor_right.set_power(20)
 
     def stop(self):
         self.motor_left.set_power(0)

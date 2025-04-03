@@ -11,15 +11,14 @@ class ColourProcessing:
     def __init__(self):
         # Predefined color reference data (normalized RGB)
         self.COLOR_REF = {
-            "red": [0.6951, 0.2053, 0.0996],
-            "blue": [0.1771, 0.4486, 0.3743],
-            "green": [0.3946, 0.5585, 0.0469],
-            "orange": [0.6921, 0.2253, 0.0826],
-            "yellow": [0.4914, 0.4774, 0.0313],
-            "purple": [0.3972, 0.3165, 0.2863],
-            "white": [0.4158, 0.4032, 0.1810],
-            "black": [0.3980, 0.4418, 0.1602],
-            }
+            "black": [8.53, 9.47, 3.47],
+            "green": [125.60, 177.80, 14.93],
+            "orange": [214.40, 75.67, 13.60],
+            "purple": [90.87, 48.13, 42.20],
+            "red": [161.33, 17.47, 7.93],
+            "white": [250.00, 242.40, 108.80],
+            "yellow": [277.53, 237.00, 22.20],
+        }
         #RALPH
 
     def _calculate_distance(self, color1, color2):

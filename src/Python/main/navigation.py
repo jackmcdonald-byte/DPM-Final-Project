@@ -1,3 +1,5 @@
+from chassis import Chassis
+
 class Navigation:
     """
     Represents a navigation system for searching a 2D grid with different 
@@ -20,7 +22,7 @@ class Navigation:
     :type found: int
     Author: Jack McDonald
     """
-    def __init__(self):
+    def __init__(self, robot, chassis):
         """
         Class responsible for managing a search operation in a grid-like structure. The 
         class keeps track of the search state and dynamically updates based on the 
@@ -51,43 +53,15 @@ class Navigation:
         ]
         self.search_queue = []
         self.found = 0
+        self.chassis = chassis
+        self.robot = robot
 
-    def __queue_search(self):
-        """
-        Represents a private method for adding all unsearched tiles 
-        to the search queue.
-        
-        This function iterates through the search grid and identifies 
-        all tiles marked as 'u' (unsearched). Each identified tile's 
-        position is added to the search queue for further processing.
-        
-        :return: None
-        :rtype: None
-        Author: Jack McDonald
-        """
-        pass
+    def sweep(self, direction: bool):
+        for i in range(18): # MAY NEED TO ADJUST IF IT DETECTS THE SAME FIRE > ONCE
+            self.chassis.turn_degrees(20 * (1 - (2 * direction)))
+            if self.robot.get_colour() == "red":
+                self.chassis.extinguish_fire()
+                self.found += 1
+                self.chassis.turn_degrees((17 - i) * 20 * (1 - (2 * direction)))
+                break
 
-    def get_next_route(self):
-        """
-        Handles the computation and retrieval of the next route in a series of routes.
-        This method is intended to provide navigation functionality by determining
-        and returning the next logical route from a defined set or sequence.
-
-        :return: The next route determined by the calculation or retrieval.
-        :rtype: str
-        Author: Jack McDonald
-        """
-        pass
-
-    def update_position(self):
-        """
-        Updates the position of the robot. This method should calculate and set the
-        new position based on the relevant properties or parameters of the object.
-        It is designed to handle any internal logic needed to properly update the
-        position attribute or state.
-
-        :return: None
-        :rtype: NoneType
-        Author: Jack McDonald
-        """
-        pass

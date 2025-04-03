@@ -50,7 +50,7 @@ class Robot:
         """
         self.state = "idle"
         self.chassis = Chassis(self)
-        self.navigation = Navigation()
+        self.navigation = Navigation(self, self.chassis)
         self.sensors = SensorController()
         self.siren = Siren()
 
@@ -137,21 +137,54 @@ class Robot:
         self.emergency_stop_thread = Thread(target=self.__emergency_stop_check, daemon=True, name="em._stop")
 
     def __enter_navigation_a(self):
-        self.chassis.move_until_colour("yellow")
+        self.chassis.move_until_colour("purple")
         self.chassis.turn_right()
         self.chassis.move_until_distance(25)
         self.chassis.turn_left()
 
     def __enter_search(self):
-        # TODO temp code
-        while self.navigation.found < 2:
-            if self.colour_reading == "red":
-                self.chassis.extinguish_fire()
-                self.chassis.MotorController.move_distance_forward(20, 100)
-                self.navigation.found += 1
+        self.chassis.move_until_distance(7) # colour sensor is 13 cm from wall
+        self.chassis.turn_left()
+        self.chassis.move_distance_forward(24)
+        self.chassis.turn_degrees(180)
+
+        x_interval = 6
+        y_interval = 11
+
+        x = -4
+        facing_east = True
+
+        for i in range(2):
+            for j in range(8):
+                self.navigation.sweep(bool (j % 2))
+                if self.navigation.found >= 2:
+                    # TODO stop early
+                    pass
+                self.chassis.move_distance_forward(6)
+                x += 1 * (-1 + 2 * facing_east)
+            self.navigation.sweep(bool (i % 2))
+            if self.navigation.found >= 2:
+                # TODO stop early
+                pass
+            self.chassis.turn_degrees(90 * (1 - 2 * (i % 2)))
+            self.chassis.move_distance_forward(11)
+            self.chassis.turn_degrees(90 * (1 - 2 * (i % 2)))
+            facing_east = not facing_east
+        for j in range(8):
+            self.navigation.sweep(bool (j % 2))
+            if self.navigation.found >= 2:
+                # TODO stop early
+                pass
+            self.chassis.move_distance_forward(6)
+            x += 1 * (-1 + 2 * facing_east)
+        self.navigation.sweep(False)
+        self.chassis.turn_around()
+        self.chassis.move_distance_forward(24)
+        self.chassis.turn_left()
+
 
     def __enter_navigation_b(self):
-        self.chassis.move_until_colour("yellow")
+        self.chassis.move_until_colour("purple")
         self.chassis.turn_right()
         self.chassis.move_until_distance(3)
         self.chassis.turn_left()
