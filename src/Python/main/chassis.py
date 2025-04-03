@@ -48,7 +48,7 @@ class Chassis:
         self.MotorController = MotorController()
         self.robot = robot
 
-    def move_until_colour(self, colour: str):
+    def move_until_colour(self, colour: str, distance: int):
         """
         Moves the robot until the specified colour is detected. The movement stops when the given
         colour is identified. This function assumes a mechanism to detect colours and halts operation
@@ -59,7 +59,7 @@ class Chassis:
         :return: None
         """
         self.MotorController.move_forward()
-        while self.robot.get_colour() != colour:
+        while self.robot.get_colour() != colour and self.robot.get_distance() > distance:
             pass
         self.MotorController.stop()
         self.MotorController.move_distance_forward(distance=-ROLLBACK_DISTANCE,
