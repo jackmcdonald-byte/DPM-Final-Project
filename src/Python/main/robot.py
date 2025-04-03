@@ -50,7 +50,7 @@ class Robot:
         """
         self.state = "idle"
         self.chassis = Chassis(self)
-        self.navigation = Navigation(self, self.chassis)
+        self.navigation = Navigation(self, self.chassis.MotorController, self.chassis)
         self.sensors = SensorController()
         self.siren = Siren()
 
@@ -112,6 +112,7 @@ class Robot:
                 self.emergency_stop_thread.join()
 
             print("Robot stopped, threads terminated")
+            sys.exit()
         except IOError as error:
             print(error)
 
@@ -143,44 +144,32 @@ class Robot:
         self.chassis.turn_left()
 
     def __enter_search(self):
-        self.chassis.move_until_distance(7) # colour sensor is 13 cm from wall
+        self.chassis.move_until_distance(22) # colour sensor is 13 cm from wall
         self.chassis.turn_left()
-        self.chassis.move_distance_forward(0.24)
-        self.chassis.turn_degrees(180)
 
-        x_interval = 6
+        x_interval = 3
         y_interval = 11
 
-        x = -4
-        facing_east = True
+        x = 0
+        facing_west = True
 
-        for i in range(2):
-            for j in range(8):
-                self.navigation.sweep(bool (j % 2))
-                if self.navigation.found >= 2:
-                    # TODO stop early
-                    pass
-                self.chassis.move_distance_forward(0.06)
-                x += 1 * (-1 + 2 * facing_east)
-            self.navigation.sweep(bool (i % 2))
-            if self.navigation.found >= 2:
-                # TODO stop early
-                pass
-            self.chassis.turn_degrees(90 * (1 - 2 * (i % 2)))
-            self.chassis.move_distance_forward(0.11)
-            self.chassis.turn_degrees(90 * (1 - 2 * (i % 2)))
-            facing_east = not facing_east
-        for j in range(8):
-            self.navigation.sweep(bool (j % 2))
-            if self.navigation.found >= 2:
-                # TODO stop early
-                pass
-            self.chassis.move_distance_forward(0.06)
-            x += 1 * (-1 + 2 * facing_east)
-        self.navigation.sweep(False)
-        self.chassis.turn_around()
-        self.chassis.move_distance_forward(0.24)
-        self.chassis.turn_left()
+        for i in range(8):
+            self.chassis.move_distance_forward(3)
+            self.navigation.sweep()
+            if self.navigation.blocked:
+                self.chassis.turn_degrees(180)
+                self.navigation.blocked = False
+                break
+        self.chassis.move_distance_forward(3 * (i + 1))
+
+        for i in range(8):
+            self.chassis.move_distance_forward(3)
+            self.navigation.sweep()
+            if self.navigation.blocked:
+                self.chassis.turn_degrees(-180)
+                self.navigation.blocked = False
+                break
+        self.chassis.move_distance_forward(3 * (i + 1))
 
 
     def __enter_navigation_b(self):

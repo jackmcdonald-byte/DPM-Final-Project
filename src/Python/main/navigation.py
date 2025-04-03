@@ -1,4 +1,5 @@
-from chassis import Chassis
+from Python.main.chassis import Chassis
+from motor import MotorController
 
 class Navigation:
     """
@@ -22,7 +23,7 @@ class Navigation:
     :type found: int
     Author: Jack McDonald
     """
-    def __init__(self, robot, chassis):
+    def __init__(self, robot, motor_controller: MotorController, chassis: Chassis):
         """
         Class responsible for managing a search operation in a grid-like structure. The 
         class keeps track of the search state and dynamically updates based on the 
@@ -46,6 +47,7 @@ class Navigation:
         # f = furniture
         # c = current pos.
         # s = searched
+        self.blocked = None
         self.search_array = [
             ['u', 'u', 'u'],
             ['u', 'u', 'u'],
@@ -53,15 +55,24 @@ class Navigation:
         ]
         self.search_queue = []
         self.found = 0
-        self.chassis = chassis
+        self.motor = motor_controller
         self.robot = robot
+        self.chassis = chassis
 
-    def sweep(self, direction: bool):
-        for i in range(9): # MAY NEED TO ADJUST IF IT DETECTS THE SAME FIRE > ONCE
-            self.chassis.turn_degrees(40 * (1 - (2 * direction)))
-            if self.robot.get_colour() == "red":
-                self.chassis.extinguish_fire()
-                self.found += 1
-                self.chassis.turn_degrees((8 - i) * 20 * (1 - (2 * direction)))
-                break
+    def sweep(self):
+        left_start_pos = self.motor.motor_left.get_position()
+        right_start_pos = self.motor.motor_right.get_position()
+
+        self.motor.rotate(angle=60, speed=self.motor.TRN_SPEED)
+        self.motor.rotate_no_wait(angle=-120, speed=self.motor.TRN_SPEED/3)
+        if self.robot.get_colour() == "red":
+            self.motor.stop()
+            self.chassis.extinguish_fire()
+            self.found += 1
+        if self.robot.get_colour() == "green":
+            self.blocked = True
+        self.motor.rotate_to_angle(left_motor_angle=left_start_pos,
+                                   right_motor_angle=right_start_pos,
+                                   speed=self.motor.TRN_SPEED)
+
 

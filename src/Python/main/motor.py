@@ -151,6 +151,29 @@ class MotorController:
         Author: Jack McDonald
         """
         try:
+            self.rotate_no_wait(angle, speed)
+
+            self.wait_for_motor(self.motor_right)
+        except IOError as error:
+            print(error)
+
+    def rotate_no_wait(self, angle, speed):
+        """
+        Performs a rotation by controlling two motors according to the specified angle
+        and speed. The method calculates the necessary motor positions based on the
+        angle and sets their speeds accordingly. After setting the motor parameters
+        and starting the motion, it waits for one motor to complete the rotation.
+
+        :param angle: The rotation angle in degrees, used to determine the relative
+                      position change for each motor.
+        :type angle: float
+        :param speed: The rotational speed in degrees per second to apply to both
+                      motors during the rotation.
+        :type speed: int
+        :return: None
+        Author: Jack McDonald
+        """
+        try:
             speed *= 1.5
             angle = angle * self.MOVEMENT_CORRECTION_FACTOR
             self.motor_left.set_dps(speed * self.LEFT_MOTOR_CORRECTION_FACTOR )
@@ -159,6 +182,33 @@ class MotorController:
             self.motor_right.set_limits(self.POWER_LIMIT, speed)
             self.motor_left.set_position_relative(int(angle * self.ORIENTATION_TO_DEGREES))
             self.motor_right.set_position_relative(int(-angle * self.ORIENTATION_TO_DEGREES))
+        except IOError as error:
+            print(error)
+
+    def rotate_to_angle(self, left_motor_angle, right_motor_angle, speed):
+        """
+        Performs a rotation by controlling two motors according to the specified angle
+        and speed. The method calculates the necessary motor positions based on the
+        angle and sets their speeds accordingly. After setting the motor parameters
+        and starting the motion, it waits for one motor to complete the rotation.
+
+        :param angle: The rotation angle in degrees, used to determine the relative
+                      position change for each motor.
+        :type angle: float
+        :param speed: The rotational speed in degrees per second to apply to both
+                      motors during the rotation.
+        :type speed: int
+        :return: None
+        Author: Jack McDonald
+        """
+        try:
+            speed *= 1.5
+            self.motor_left.set_dps(speed * self.LEFT_MOTOR_CORRECTION_FACTOR)
+            self.motor_right.set_dps(speed)
+            self.motor_left.set_limits(self.POWER_LIMIT, speed)
+            self.motor_right.set_limits(self.POWER_LIMIT, speed)
+            self.motor_left.set_position(left_motor_angle)
+            self.motor_right.set_position(right_motor_angle)
 
             self.wait_for_motor(self.motor_right)
         except IOError as error:
