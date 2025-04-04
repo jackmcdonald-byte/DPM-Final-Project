@@ -1,4 +1,5 @@
 import sys
+import time
 from threading import *
 from chassis import Chassis
 from navigation import Navigation
@@ -140,6 +141,7 @@ class Robot:
     def __enter_navigation_a(self):
         self.chassis.move_until_colour("purple")
         self.chassis.turn_right()
+        time.sleep(0.2)
         self.chassis.move_until_distance(25)
         self.chassis.turn_left()
 
@@ -154,22 +156,24 @@ class Robot:
         facing_west = True
 
         for i in range(8):
-            self.chassis.move_distance_forward(3)
+            self.chassis.move_distance_forward(0.03)
+            time.sleep(0.2)
             self.navigation.sweep()
             if self.navigation.blocked:
                 self.chassis.turn_degrees(180)
                 self.navigation.blocked = False
                 break
-        self.chassis.move_distance_forward(3 * (i + 1))
+        self.chassis.move_distance_forward(0.033 * (i + 1))
 
         for i in range(8):
-            self.chassis.move_distance_forward(3)
+            self.chassis.move_distance_forward(0.03)
+            time.sleep(0.2)
             self.navigation.sweep()
             if self.navigation.blocked:
                 self.chassis.turn_degrees(-180)
                 self.navigation.blocked = False
                 break
-        self.chassis.move_distance_forward(3 * (i + 1))
+        self.chassis.move_distance_forward(0.03 * (i + 1))
 
 
     def __enter_navigation_b(self):
@@ -185,6 +189,7 @@ class Robot:
             self.distance_reading = self.sensors.get_us_sensor_distance()
             self.touch_reading = self.sensors.get_touch_sensor_state()
             print(self.colour_reading)
+            print(self.distance_reading)
 
     def __emergency_stop_check(self):
         while self.state != "idle":

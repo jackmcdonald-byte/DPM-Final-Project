@@ -1,4 +1,5 @@
-from Python.main.chassis import Chassis
+import time
+from chassis import Chassis
 from motor import MotorController
 
 class Navigation:
@@ -63,14 +64,18 @@ class Navigation:
         left_start_pos = self.motor.motor_left.get_position()
         right_start_pos = self.motor.motor_right.get_position()
 
-        self.motor.rotate(angle=60, speed=self.motor.TRN_SPEED)
-        self.motor.rotate_no_wait(angle=-120, speed=self.motor.TRN_SPEED/3)
-        if self.robot.get_colour() == "red":
-            self.motor.stop()
-            self.chassis.extinguish_fire()
-            self.found += 1
-        if self.robot.get_colour() == "green":
-            self.blocked = True
+        self.motor.rotate(angle=90, speed=self.motor.TRN_SPEED)
+        self.motor.rotate_no_wait(angle=-180, speed=self.motor.TRN_SPEED/3)
+        time.sleep(0.2)
+        end_time = time.time() + 5
+        while time.time() < end_time:   
+            if self.robot.get_colour() == "red":
+                time.sleep(5)
+                self.motor.stop()
+                self.chassis.extinguish_fire()
+                self.found += 1
+            #elif self.robot.get_colour() == "green":
+                #self.blocked = True
         self.motor.rotate_to_angle(left_motor_angle=left_start_pos,
                                    right_motor_angle=right_start_pos,
                                    speed=self.motor.TRN_SPEED)

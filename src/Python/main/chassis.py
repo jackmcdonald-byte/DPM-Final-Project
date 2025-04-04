@@ -8,7 +8,7 @@ AROUND = 180
 
 # Constants for movement tuning
 OVERRUN_DISTANCE = 15  # meters to move past the line (adjust based on robot size)
-ROLLBACK_DISTANCE = 0.05
+ROLLBACK_DISTANCE = 0.08
 EXTINGUISH_DISTANCE = 0.035
 TIMEOUT = 5  # timeout constant for one tile forward move
 
@@ -64,6 +64,7 @@ class Chassis:
         self.MotorController.stop()
         self.MotorController.move_distance_forward(distance=-ROLLBACK_DISTANCE,
                                           speed=self.MotorController.FWD_SPEED)
+        self.MotorController.stop()
 
     def move_until_distance(self, distance: int):
         """
@@ -82,7 +83,8 @@ class Chassis:
         """
 
         self.MotorController.move_forward()
-        while self.robot.get_distance() > distance:
+        time.sleep(2)
+        while self.robot.get_distance() > distance and self.robot.get_distance() != 0:
             pass
         self.MotorController.stop()
 
