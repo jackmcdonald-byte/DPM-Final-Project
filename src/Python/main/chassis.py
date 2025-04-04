@@ -164,3 +164,8 @@ class Chassis:
         self.MotorController.dispense()
 
         #Ralph
+
+    def avoid_wall(self):
+
+        #turn 180 degrees if wall is detected (<2cm)
+        
