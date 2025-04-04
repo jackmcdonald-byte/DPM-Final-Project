@@ -11,6 +11,7 @@ AROUND = 180
 OVERRUN_DISTANCE = 15  # meters to move past the line (adjust based on robot size)
 TIMEOUT = 5  # timeout constant for one tile forward move
 ROLLBACK_DISTANCE = 5
+MAX_WALL_DIST = 0.02
 
 
 class Chassis:
@@ -165,7 +166,15 @@ class Chassis:
 
         #Ralph
 
-    def avoid_wall(self):
+    def avoid_wall(self: int):
 
-        #turn 180 degrees if wall is detected (<2cm)
+        '''
+        turn 180 degrees if wall is detected (<2cm)
+
+        return: none
+        '''
+        if self.robot.get_distance() < MAX_WALL_DIST:
+            self.turn_around()
+            
+        
         
