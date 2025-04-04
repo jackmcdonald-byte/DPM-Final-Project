@@ -137,10 +137,12 @@ class Robot:
         self.emergency_stop_thread = Thread(target=self.__emergency_stop_check, daemon=True, name="em._stop")
 
     def __enter_navigation_a(self):
+        self.siren.play_siren()
         self.chassis.move_until_colour("purple", 50)
         self.chassis.turn_right()
         self.chassis.move_until_distance(25)
         self.chassis.turn_left()
+        self.siren.stop_siren()
 
     def __enter_search(self):
         self.chassis.move_until_distance(7) # colour sensor is 13 cm from wall
@@ -184,7 +186,7 @@ class Robot:
 
 
     def __enter_navigation_b(self):
-        self.chassis.move_until_colour("purple")
+        self.chassis.move_until_colour("purple", 50)
         self.chassis.turn_right()
         self.chassis.move_until_distance(3)
         self.chassis.turn_left()

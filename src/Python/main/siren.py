@@ -1,4 +1,6 @@
-from playsound import playsound
+from pygame import mixer
+
+SIREN_MP3 = "src/Python/main/project/mp3/fire-truck-siren-307510.mp3"
 
 class Siren:
     """
@@ -25,6 +27,7 @@ class Siren:
         Author: Jack McDonald
         """
         self.is_active = False
+        mixer.init()
 
     def play_siren(self):
         """
@@ -39,7 +42,14 @@ class Siren:
 
         Author: Jack McDonald
         """
-        pass
+        if not self.is_active:
+            try:
+                self.sound = mixer.Sound(SIREN_MP3)
+                self.sound.play(loops=-1)  # -1 for infinite loops
+                self.is_active = True
+            except Exception as e:
+                print(f"Error playing siren: {e}")
+                self.is_active = False
 
     def stop_siren(self):
         """
@@ -52,4 +62,6 @@ class Siren:
 
         Author: Jack McDonald
         """
-        pass
+        if self.is_active:
+            mixer.stop()  # Stop all mixer playback
+            self.is_active = False

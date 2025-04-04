@@ -25,7 +25,8 @@ class ColourProcessing:
         """
         Calculate squared Euclidean distance between two RGB colors.
         """
-        return sum((a - b) ** 2 for a, b in zip(color1, color2))
+        distance = ((color1[0] - color2[0]) ** 2 + (color1[1] - color2[1]) ** 2 + (color1[2] - color2[2]) ** 2) ** 0.5
+        return distance
     #RALPH
 
     def identify_colour(self, colour: list):
