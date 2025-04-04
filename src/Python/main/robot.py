@@ -4,6 +4,7 @@ from chassis import Chassis
 from navigation import Navigation
 from sensors import SensorController
 from siren import Siren
+from motor_controller import MotorController
 
 
 class Robot:
@@ -104,7 +105,7 @@ class Robot:
         """
         try:
             self.__transition_to("idle")
-
+            self.MotorController.stop()
             # Wait for threads to terminate
             if self.sensor_thread and self.sensor_thread.is_alive():
                 self.sensor_thread.join()

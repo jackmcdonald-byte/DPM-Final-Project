@@ -175,3 +175,6 @@ class Chassis:
 
     def turn_degrees(self, degrees: int):
         self.MotorController.rotate(angle=degrees, speed=self.MotorController.TRN_SPEED)
+
+    def stop_motors(self):
+        self.MotorController.stop()
