@@ -11,7 +11,7 @@ AROUND = 180
 OVERRUN_DISTANCE = 15  # meters to move past the line (adjust based on robot size)
 TIMEOUT = 5  # timeout constant for one tile forward move
 ROLLBACK_DISTANCE = 5
-MAX_WALL_DIST = 0.02
+MAX_WALL_DIST = 2
 
 
 class Chassis:
