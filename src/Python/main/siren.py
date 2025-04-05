@@ -1,4 +1,5 @@
 import subprocess
+import sys
 
 class Siren:
     """
@@ -13,7 +14,7 @@ class Siren:
 
     Author: Jack McDonald
     """
-    FILE_NAME = "siren.wav"
+    FILE_NAME = "/tmp/pycharm_project_846/src/Python/main/free_bird_solo.mp3"
 
     def __init__(self):
         """
@@ -41,7 +42,7 @@ class Siren:
 
         Author: Jack McDonald
         """
-        pass
+        self.__play_mp3(Siren.FILE_NAME)
 
     def stop_siren(self):
         """
@@ -54,13 +55,14 @@ class Siren:
 
         Author: Jack McDonald
         """
-        pass
+        self.__stop_mp3()
 
     def __play_mp3(self, path):
         if self.process:
             self.__stop_mp3()  # Stop any currently playing sound
+        print(sys.path)
         self.process = subprocess.Popen(['mpg123', '-q', path])
-        
+
     def __stop_mp3(self):
         if self.process:
             self.process.terminate()

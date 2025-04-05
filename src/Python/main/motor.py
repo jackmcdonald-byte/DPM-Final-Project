@@ -30,8 +30,8 @@ class MotorController:
     WHEEL_RADIUS = 0.0206  # (meters) Radius of one wheel
     AXLE_LENGTH = 0.0455
 
-    FWD_SPEED = 100  # (deg per sec) Moving forward speed
-    TRN_SPEED = 180  # (deg per sec) Turning a corner speed
+    FWD_SPEED = 120  # (deg per sec) Moving forward speed
+    TRN_SPEED = 120  # (deg per sec) Turning a corner speed
     DSP_SPEED = 30  # (deg per sec) Dispensing speed
 
     POWER_LIMIT = 80
@@ -39,9 +39,9 @@ class MotorController:
 
     DISTANCE_TO_DEGREES = 180 / (pi * WHEEL_RADIUS)  # scale factor for distance
     ORIENTATION_TO_DEGREES = AXLE_LENGTH / WHEEL_RADIUS  # scale factor for rotation
-    DISPENSER_TURN_ANGLE = -51
+    DISPENSER_TURN_ANGLE = -62
 
-    MOVEMENT_CORRECTION_FACTOR = 1.08
+    MOVEMENT_CORRECTION_FACTOR = 1.15
     LEFT_MOTOR_CORRECTION_FACTOR = 1.00
 
     def __init__(self):

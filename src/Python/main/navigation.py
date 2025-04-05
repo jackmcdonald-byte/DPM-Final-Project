@@ -79,8 +79,8 @@ class Navigation:
             elif self.robot.get_colour() == "green":
                 pass
                 #self.blocked = True
-        self.motor.rotate_to_angle(left_motor_angle=left_start_pos,
-                                   right_motor_angle=right_start_pos,
+        self.motor.rotate_to_angle(left_motor_angle=left_start_pos + 20,
+                                   right_motor_angle=right_start_pos + 20,
                                    speed=self.motor.TRN_SPEED)
 
 

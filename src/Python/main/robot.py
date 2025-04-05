@@ -188,6 +188,7 @@ class Robot:
             self.distance_reading = self.sensors.get_us_sensor_distance()
             self.touch_reading = self.sensors.get_touch_sensor_state()
             print(self.colour_reading)
+            print(self.distance_reading)
 
     def __emergency_stop_check(self):
         while self.state != "idle":
