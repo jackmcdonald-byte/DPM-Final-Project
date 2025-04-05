@@ -1,4 +1,4 @@
-from playsound import playsound
+import subprocess
 
 class Siren:
     """
@@ -26,6 +26,7 @@ class Siren:
         Author: Jack McDonald
         """
         self.is_active = False
+        self.process = None
 
     def play_siren(self):
         """
@@ -54,3 +55,13 @@ class Siren:
         Author: Jack McDonald
         """
         pass
+
+    def __play_mp3(self, path):
+        if self.process:
+            self.__stop_mp3()  # Stop any currently playing sound
+        self.process = subprocess.Popen(['mpg123', '-q', path])
+        
+    def __stop_mp3(self):
+        if self.process:
+            self.process.terminate()
+            self.process = None

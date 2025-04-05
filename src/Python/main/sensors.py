@@ -96,4 +96,6 @@ class SensorController:
         :rtype: float
         Author: Jack McDonald
         """
+        if get_distance() < 1:
+            return 255
         return get_distance()
