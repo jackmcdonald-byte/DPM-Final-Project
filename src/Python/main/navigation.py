@@ -63,13 +63,13 @@ class Navigation:
         self.chassis = chassis
 
     def sweep(self):
-        left_start_pos = self.motor.motor_left.get_position()
-        right_start_pos = self.motor.motor_right.get_position()
+        left_start_pos = self.motor.motor_left.get_position() + 10
+        right_start_pos = self.motor.motor_right.get_position() - 10
 
         self.motor.rotate(angle=90, speed=self.motor.TRN_SPEED)
         time.sleep(0.2)
-        self.motor.rotate_no_wait(angle=-180, speed=self.motor.TRN_SPEED/3)
-        end_time = time.time() + 5
+        self.motor.rotate_no_wait(angle=-180, speed=self.motor.TRN_SPEED/1.5)
+        end_time = time.time() + 4
         while time.time() < end_time:
             if self.robot.get_colour() == "red":
                 self.motor.stop()
@@ -79,8 +79,9 @@ class Navigation:
             elif self.robot.get_colour() == "green":
                 pass
                 #self.blocked = True
-        self.motor.rotate_to_angle(left_motor_angle=left_start_pos + 20,
-                                   right_motor_angle=right_start_pos + 20,
+        self.motor.rotate_to_angle(left_motor_angle=left_start_pos,
+                                   right_motor_angle=right_start_pos,
                                    speed=self.motor.TRN_SPEED)
+        time.sleep(0.5)
 
 

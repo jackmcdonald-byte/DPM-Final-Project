@@ -30,8 +30,8 @@ class MotorController:
     WHEEL_RADIUS = 0.0206  # (meters) Radius of one wheel
     AXLE_LENGTH = 0.0455
 
-    FWD_SPEED = 120  # (deg per sec) Moving forward speed
-    TRN_SPEED = 120  # (deg per sec) Turning a corner speed
+    FWD_SPEED = 150  # (deg per sec) Moving forward speed
+    TRN_SPEED = 100  # (deg per sec) Turning a corner speed
     DSP_SPEED = 30  # (deg per sec) Dispensing speed
 
     POWER_LIMIT = 80
@@ -41,8 +41,8 @@ class MotorController:
     ORIENTATION_TO_DEGREES = AXLE_LENGTH / WHEEL_RADIUS  # scale factor for rotation
     DISPENSER_TURN_ANGLE = -62
 
-    MOVEMENT_CORRECTION_FACTOR = 1.15
-    LEFT_MOTOR_CORRECTION_FACTOR = 1.00
+    MOVEMENT_CORRECTION_FACTOR = 1.02
+    LEFT_MOTOR_CORRECTION_FACTOR = 1.04
 
     def __init__(self):
         """
@@ -202,8 +202,8 @@ class MotorController:
         Author: Jack McDonald
         """
         try:
-            speed *= 1.5
-            self.motor_left.set_dps(speed * self.LEFT_MOTOR_CORRECTION_FACTOR)
+            speed *= 1
+            self.motor_left.set_dps(speed)
             self.motor_right.set_dps(speed)
             self.motor_left.set_limits(self.POWER_LIMIT, speed)
             self.motor_right.set_limits(self.POWER_LIMIT, speed)
@@ -211,6 +211,7 @@ class MotorController:
             self.motor_right.set_position(right_motor_angle)
 
             self.wait_for_motor(self.motor_right)
+            time.sleep(0.5)
         except IOError as error:
             print(error)
 
@@ -259,9 +260,17 @@ class MotorController:
         self.motor_right.set_dps(self.FWD_SPEED)
         self.motor_left.set_limits(self.POWER_LIMIT, self.FWD_SPEED)
         self.motor_right.set_limits(self.POWER_LIMIT, self.FWD_SPEED)
-        self.motor_left.set_power(20 * self.LEFT_MOTOR_CORRECTION_FACTOR)
-        self.motor_right.set_power(20)
+        self.motor_left.set_power(35 * self.LEFT_MOTOR_CORRECTION_FACTOR)
+        self.motor_right.set_power(35)
 
     def stop(self):
         self.motor_left.set_power(0)
         self.motor_right.set_power(0)
+
+    def move_forward_slow(self):
+        self.motor_left.set_dps(self.FWD_SPEED * self.LEFT_MOTOR_CORRECTION_FACTOR)
+        self.motor_right.set_dps(self.FWD_SPEED)
+        self.motor_left.set_limits(self.POWER_LIMIT, self.FWD_SPEED)
+        self.motor_right.set_limits(self.POWER_LIMIT, self.FWD_SPEED)
+        self.motor_left.set_power(15 * self.LEFT_MOTOR_CORRECTION_FACTOR)
+        self.motor_right.set_power(15)

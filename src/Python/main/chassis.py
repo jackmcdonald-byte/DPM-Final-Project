@@ -62,8 +62,9 @@ class Chassis:
         while self.robot.get_colour() != colour:
             pass
         self.MotorController.stop()
+        time.sleep(0.1)
         self.MotorController.move_distance_forward(distance=-ROLLBACK_DISTANCE,
-                                          speed=self.MotorController.FWD_SPEED)
+                                          speed=self.MotorController.FWD_SPEED / 2)
         self.MotorController.stop()
 
     def move_until_distance(self, distance: int):
@@ -165,11 +166,11 @@ class Chassis:
         """
         # Activate dispenser
         self.MotorController.move_distance_forward(distance=-EXTINGUISH_DISTANCE,
-                                                   speed=self.MotorController.FWD_SPEED)
+                                                   speed=self.MotorController.FWD_SPEED / 2)
         self.MotorController.dispense()
         input("Press Enter to continue...")
         self.MotorController.move_distance_forward(distance=EXTINGUISH_DISTANCE,
-                                                   speed=self.MotorController.FWD_SPEED)
+                                                   speed=self.MotorController.FWD_SPEED / 2)
 
         # Ralph
 
@@ -178,3 +179,12 @@ class Chassis:
 
     def turn_degrees(self, degrees: int):
         self.MotorController.rotate(angle=degrees, speed=self.MotorController.TRN_SPEED)
+
+    def move_distance_forward_slow(self, param):
+        self.MotorController.move_distance_forward(distance=param, speed=self.MotorController.FWD_SPEED / 2)
+
+    def move_until_line(self):
+        self.MotorController.move_forward_slow()
+        while self.robot.get_colour() != "black" or self.robot.get_colour() != "grey":
+            pass
+        self.MotorController.stop()
