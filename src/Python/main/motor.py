@@ -30,7 +30,7 @@ class MotorController:
     WHEEL_RADIUS = 0.0206  # (meters) Radius of one wheel
     AXLE_LENGTH = 0.0455
 
-    FWD_SPEED = 150  # (deg per sec) Moving forward speed
+    FWD_SPEED = 130  # (deg per sec) Moving forward speed
     TRN_SPEED = 100  # (deg per sec) Turning a corner speed
     DSP_SPEED = 30  # (deg per sec) Dispensing speed
 
@@ -42,7 +42,7 @@ class MotorController:
     DISPENSER_TURN_ANGLE = -62
 
     MOVEMENT_CORRECTION_FACTOR = 1.02
-    LEFT_MOTOR_CORRECTION_FACTOR = 1.04
+    LEFT_MOTOR_CORRECTION_FACTOR = 1.03
 
     def __init__(self):
         """
@@ -131,6 +131,7 @@ class MotorController:
             self.motor_right.set_position_relative(int(distance * self.DISTANCE_TO_DEGREES))
 
             self.wait_for_motor(self.motor_right)
+            time.sleep(0.4)
         except IOError as error:
             print(error)
 
@@ -152,8 +153,7 @@ class MotorController:
         """
         try:
             self.rotate_no_wait(angle, speed)
-            time.sleep(0.5)
-            self.wait_for_motor(self.motor_right)
+            time.sleep(1.5 * math.fabs(angle / 90))
         except IOError as error:
             print(error)
 
@@ -210,8 +210,7 @@ class MotorController:
             self.motor_left.set_position(left_motor_angle)
             self.motor_right.set_position(right_motor_angle)
 
-            self.wait_for_motor(self.motor_right)
-            time.sleep(0.5)
+            time.sleep(2)
         except IOError as error:
             print(error)
 
