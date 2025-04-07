@@ -1,6 +1,9 @@
 import sys
+import os
 import time
 from threading import *
+
+from Python.main.project.utils import colour_sensor
 from chassis import Chassis
 from navigation import Navigation
 from sensors import SensorController
@@ -83,6 +86,8 @@ class Robot:
             self.sensor_thread.start()
             self.emergency_stop_thread.start()
 
+            start = time.time()
+
             self.__transition_to("NavigationA")
             self.__enter_navigation_a()
 
@@ -91,6 +96,9 @@ class Robot:
 
             self.__transition_to("NavigationB")
             self.__enter_navigation_b()
+
+            print("finished in", time.time() - start)
+            sys.exit(0)
         except IOError as error:
             print(error)
 
@@ -113,7 +121,7 @@ class Robot:
                 self.emergency_stop_thread.join()
 
             print("Robot stopped, threads terminated")
-            sys.exit()
+            quit()
         except IOError as error:
             print(error)
 
@@ -132,7 +140,7 @@ class Robot:
             self.siren.play_siren()
         if self.state == "idle":
             self.chassis.MotorController.stop()
-            sys.exit() # TODO find better solution
+            os._exit(0)
             pass
 
     def __create_threads(self):
@@ -158,67 +166,67 @@ class Robot:
         x = 0
         facing_west = True
 
-        self.chassis.move_distance_forward(0.11)
+        self.chassis.move_distance_forward(0.09)
         temp = self.navigation.found
         for i in range(4):
             if self.navigation.found >= 2 or temp < self.navigation.found:
                 break
-            self.chassis.move_distance_forward_slow(0.035)
-            time.sleep(0.2)
-            self.navigation.sweep()
-            if self.navigation.blocked:
-                self.navigation.blocked = False
-                break
-        self.chassis.turn_degrees(-180)
-        time.sleep(0.2)
-        self.chassis.move_distance_forward(0.03 * i)
-
-        self.chassis.move_until_distance(24)
-        temp = self.navigation.found
-        for i in range(4):
-            if self.navigation.found >= 2 or temp < self.navigation.found:
-                break
-            self.chassis.move_distance_forward_slow(0.035)
+            self.chassis.move_distance_forward_slow(0.033)
             time.sleep(0.2)
             self.navigation.sweep()
             if self.navigation.blocked:
                 self.navigation.blocked = False
                 break
         self.chassis.turn_degrees(180)
+        time.sleep(0.2)
+        self.chassis.move_distance_forward(0.03 * i)
+
+        self.chassis.move_until_distance(26)
+        temp = self.navigation.found
+        for i in range(4):
+            if self.navigation.found >= 2 or temp < self.navigation.found:
+                break
+            self.chassis.move_distance_forward_slow(0.033)
+            time.sleep(0.2)
+            self.navigation.sweep()
+            if self.navigation.blocked:
+                self.navigation.blocked = False
+                break
+        self.chassis.turn_degrees(-180)
         time.sleep(0.2)
         self.chassis.move_distance_forward(0.03 * (i + 4))
 
         self.chassis.turn_left()
-        self.chassis.move_distance_forward(0.17)
+        self.chassis.move_distance_forward(0.145)
         self.chassis.turn_right()
 
-        self.chassis.move_distance_forward(0.8)
+        self.chassis.move_distance_forward(0.06)
         temp = self.navigation.found
         for i in range(4):
             if self.navigation.found >= 2 or temp < self.navigation.found:
                 break
-            self.chassis.move_distance_forward_slow(0.035)
-            time.sleep(0.2)
-            self.navigation.sweep()
-            if self.navigation.blocked:
-                self.navigation.blocked = False
-                break
-        self.chassis.turn_degrees(-180)
-        time.sleep(0.2)
-        self.chassis.move_distance_forward(0.03 * (i + 6))
-
-        self.chassis.move_until_distance(24)
-        temp = self.navigation.found
-        for i in range(4):
-            if self.navigation.found >= 2 or temp < self.navigation.found:
-                break
-            self.chassis.move_distance_forward_slow(0.035)
+            self.chassis.move_distance_forward_slow(0.033)
             time.sleep(0.2)
             self.navigation.sweep()
             if self.navigation.blocked:
                 self.navigation.blocked = False
                 break
         self.chassis.turn_degrees(180)
+        time.sleep(0.2)
+        self.chassis.move_distance_forward(0.03 * (i + 6))
+
+        self.chassis.move_until_distance(26)
+        temp = self.navigation.found
+        for i in range(4):
+            if self.navigation.found >= 2 or temp < self.navigation.found:
+                break
+            self.chassis.move_distance_forward_slow(0.033)
+            time.sleep(0.2)
+            self.navigation.sweep()
+            if self.navigation.blocked:
+                self.navigation.blocked = False
+                break
+        self.chassis.turn_degrees(-180)
         self.chassis.move_distance_forward(0.03 * (i + 4))
 
         self.chassis.turn_left()
@@ -228,15 +236,17 @@ class Robot:
         self.chassis.turn_right()
         self.chassis.move_until_distance(11)
         self.chassis.turn_left()
-        self.chassis.move_until_distance(11)
+        self.chassis.move_until_distance(13)
 
     def __update_sensor_data(self):
         while self.state != "idle":
             self.colour_reading = self.sensors.get_colour_name()
             self.distance_reading = self.sensors.get_us_sensor_distance()
             self.touch_reading = self.sensors.get_touch_sensor_state()
-            print(self.colour_reading)
-            print(self.distance_reading)
+            # print(self.colour_reading, colour_sensor.get_raw_rgb())
+            # print(self.distance_reading)
+            print(self.touch_reading)
+            # time.sleep(0.01)
 
     def __emergency_stop_check(self):
         while self.state != "idle":

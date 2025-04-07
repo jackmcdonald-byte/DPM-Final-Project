@@ -68,7 +68,7 @@ class Navigation:
 
         self.motor.rotate(angle=90, speed=self.motor.TRN_SPEED)
         time.sleep(0.2)
-        self.motor.rotate_no_wait(angle=-180, speed=self.motor.TRN_SPEED/1.5)
+        self.motor.rotate_no_wait(angle=-180, speed=self.motor.TRN_SPEED/1.125)
         end_time = time.time() + 4
         while time.time() < end_time:
             if self.robot.get_colour() == "red":
@@ -78,10 +78,10 @@ class Navigation:
                 break
             elif self.robot.get_colour() == "green":
                 pass
-                #self.blocked = True
+                self.blocked = True
         self.motor.rotate_to_angle(left_motor_angle=left_start_pos,
                                    right_motor_angle=right_start_pos,
                                    speed=self.motor.TRN_SPEED)
-        time.sleep(0.5)
+        time.sleep(0.75)
 
 
