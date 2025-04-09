@@ -61,15 +61,16 @@ class Navigation:
         self.motor = motor_controller
         self.robot = robot
         self.chassis = chassis
+        self.sweep_angle = 120
 
     def sweep(self):
-        left_start_pos = self.motor.motor_left.get_position() + 10
-        right_start_pos = self.motor.motor_right.get_position() - 10
+        left_start_pos = self.motor.motor_left.get_position()
+        right_start_pos = self.motor.motor_right.get_position()
 
-        self.motor.rotate(angle=90, speed=self.motor.TRN_SPEED)
-        time.sleep(0.2)
-        self.motor.rotate_no_wait(angle=-180, speed=self.motor.TRN_SPEED/1.125)
-        end_time = time.time() + 4
+        self.motor.rotate(angle=self.sweep_angle / 2, speed=self.motor.TRN_SPEED)
+        # time.sleep(0.1)
+        self.motor.rotate_no_wait(angle=self.sweep_angle * -1, speed=self.motor.TRN_SPEED/1.125)
+        end_time = time.time() + 1.7
         while time.time() < end_time:
             if self.robot.get_colour() == "red":
                 self.motor.stop()
@@ -82,6 +83,6 @@ class Navigation:
         self.motor.rotate_to_angle(left_motor_angle=left_start_pos,
                                    right_motor_angle=right_start_pos,
                                    speed=self.motor.TRN_SPEED)
-        time.sleep(0.75)
+        time.sleep(0.2)
 
 

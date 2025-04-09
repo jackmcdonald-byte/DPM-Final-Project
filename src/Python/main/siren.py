@@ -14,7 +14,7 @@ class Siren:
 
     Author: Jack McDonald
     """
-    FILE_NAME = "/tmp/pycharm_project_688/src/Python/main/nett.mp3"
+    FILE_NAME = "/tmp/pycharm_project_688/src/Python/main/free_bird_solo.mp3"
 
     def __init__(self):
         """

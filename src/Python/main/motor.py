@@ -31,7 +31,7 @@ class MotorController:
     AXLE_LENGTH = 0.0455
 
     FWD_SPEED = 90  # (deg per sec) Moving forward speed
-    TRN_SPEED = 70  # (deg per sec) Turning a corner speed
+    TRN_SPEED = 100  # (deg per sec) Turning a corner speed
     DSP_SPEED = 30  # (deg per sec) Dispensing speed
 
     POWER_LIMIT = 80
@@ -41,9 +41,10 @@ class MotorController:
     ORIENTATION_TO_DEGREES = AXLE_LENGTH / WHEEL_RADIUS  # scale factor for rotation
     DISPENSER_TURN_ANGLE = -62
 
-    RIGHT_MOVEMENT_CORRECTION_FACTOR = 1.059
-    LEFT_MOVEMENT_CORRECTION_FACTOR = 0.900
-    LEFT_MOTOR_CORRECTION_FACTOR = 1.055
+    MOVEMENT_CORRECTION_FACTOR = 0.00
+    RIGHT_MOVEMENT_CORRECTION_FACTOR = 1 + MOVEMENT_CORRECTION_FACTOR
+    LEFT_MOVEMENT_CORRECTION_FACTOR = 1 - MOVEMENT_CORRECTION_FACTOR
+    LEFT_MOTOR_CORRECTION_FACTOR = 1.1
 
     def __init__(self):
         """
@@ -131,8 +132,7 @@ class MotorController:
             self.motor_left.set_position_relative(int(distance * self.DISTANCE_TO_DEGREES))
             self.motor_right.set_position_relative(int(distance * self.DISTANCE_TO_DEGREES))
 
-            self.wait_for_motor(self.motor_right)
-            time.sleep(0.4)
+            time.sleep(0.1 * math.fabs(distance) * speed)
         except IOError as error:
             print(error)
 
@@ -154,7 +154,7 @@ class MotorController:
         """
         try:
             self.rotate_no_wait(angle, speed)
-            time.sleep(2.25 * math.fabs(angle / 90))
+            time.sleep(1.32 * math.fabs(angle / 90))
         except IOError as error:
             print(error)
 
@@ -177,7 +177,7 @@ class MotorController:
         try:
             if angle < 0:
                 speed *= 1.5
-                angle = angle * self.RIGHT_MOVEMENT_CORRECTION_FACTOR
+                angle = angle * self.LEFT_MOVEMENT_CORRECTION_FACTOR
                 self.motor_left.set_dps(speed * self.LEFT_MOTOR_CORRECTION_FACTOR )
                 self.motor_right.set_dps(speed)
                 self.motor_left.set_limits(self.POWER_LIMIT, speed)
@@ -186,7 +186,7 @@ class MotorController:
                 self.motor_right.set_position_relative(int(-angle * self.ORIENTATION_TO_DEGREES))
             else :
                 speed *= 1.5
-                angle = angle * self.LEFT_MOTOR_CORRECTION_FACTOR
+                angle = angle * self.RIGHT_MOVEMENT_CORRECTION_FACTOR
                 self.motor_left.set_dps(speed * self.LEFT_MOTOR_CORRECTION_FACTOR)
                 self.motor_right.set_dps(speed)
                 self.motor_left.set_limits(self.POWER_LIMIT, speed)
@@ -221,7 +221,7 @@ class MotorController:
             self.motor_left.set_position(left_motor_angle)
             self.motor_right.set_position(right_motor_angle)
 
-            time.sleep(2)
+            time.sleep(1.1)
         except IOError as error:
             print(error)
 

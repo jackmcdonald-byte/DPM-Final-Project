@@ -64,8 +64,8 @@ class Chassis:
         self.MotorController.stop()
         time.sleep(0.3)
         self.MotorController.move_distance_forward(distance=-ROLLBACK_DISTANCE,
-                                          speed=self.MotorController.FWD_SPEED / 2)
-        time.sleep(0.3)
+                                          speed=self.MotorController.FWD_SPEED / 1.4)
+        time.sleep(0)
         self.MotorController.stop()
 
     def move_until_distance(self, distance: int):
@@ -86,7 +86,11 @@ class Chassis:
 
         self.MotorController.move_forward()
         while self.robot.get_distance() > distance and self.robot.get_distance() != 0:
-            pass
+            if self.robot.get_colour() == "red" and self.robot.state == "Search":
+                self.MotorController.stop()
+                self.extinguish_fire()
+                self.robot.navigation.found += 1
+                self.MotorController.move_forward()
         self.MotorController.stop()
 
     def move_one_tile(self):
