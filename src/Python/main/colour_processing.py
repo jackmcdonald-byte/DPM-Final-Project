@@ -1,28 +1,18 @@
 class ColourProcessing:
     """
-    Processes and analyzes colour data for determining dominant colours.
-
-    This class provides functionality to process and analyze colour data
-    for various applications, including identifying the dominant colour
-    in a given dataset.
-
+    A utility class for processing and analyzing colour data.
+    
+    This class provides functionality to determine the closest matching 
+    colour from a predefined set of reference colours based on RGB values. 
+    It is designed for applications requiring colour recognition or analysis.
+    
     Author: Jack McDonald
     """
     def __init__(self):
         # Predefined color reference data (normalized RGB)
         self.COLOR_REF = {
             "black": [8.53, 9.47, 3.47],
-            "black": [40, 40, 15],
-            "black": [17, 22, 6],
             "grey": [199, 155, 17],
-            "grey": [187, 148, 16],
-            "grey": [60, 60, 20],
-            "grey": [94, 52, 46],
-            "grey": [86, 44, 38],
-            "grey": [80, 84, 31],
-            "grey": [120, 172, 9],
-            "grey": [130, 182, 19],
-            "grey": [166, 133, 15],
             "green": [125.60, 177.80, 14.93],
             "orange": [214.40, 75.67, 13.60],
             "purple": [90.87, 48.13, 42.20],
@@ -30,24 +20,26 @@ class ColourProcessing:
             "white": [250.00, 242.40, 108.80],
             "yellow": [277.53, 237.00, 22.20],
         }
-        #RALPH
 
     def _calculate_distance(self, color1, color2):
         """
-        Calculate squared Euclidean distance between two RGB colors.
+        Calculate the Euclidean distance between two RGB colors.
+        
+        This method is used to measure the similarity between a given colour 
+        and reference colours by calculating the geometric distance.
         """
         return ((color1[0] - color2[0]) ** 2 + (color1[1] - color2[1]) ** 2 + (color1[2] - color2[2]) ** 2) ** 0.5
-    #RALPH
 
     def identify_colour(self, colour: list):
         """
-        Identify the dominant colour in a given list of colour values.
+        Identify the closest matching colour from a predefined reference set.
+        
+        This function compares the provided RGB colour with a set of reference 
+        colours and returns the name of the closest match based on minimum 
+        Euclidean distance.
 
-        This function analyzes the provided list of normalized colour values and determines
-        the dominant or most prominent colour. It serves as a utility for
-        processing colour-related data.
-
-        :param colour: A list of RGB values to be analyzed.
+        :param colour: A list of three RGB values (red, green, blue) to 
+                       match against the reference colours.
         :type colour: list
         :return: The dominant colour determined from the analysis.
         :rtype: str

@@ -41,10 +41,10 @@ class MotorController:
     ORIENTATION_TO_DEGREES = AXLE_LENGTH / WHEEL_RADIUS  # scale factor for rotation
     DISPENSER_TURN_ANGLE = -62
 
-    MOVEMENT_CORRECTION_FACTOR = 0.00
+    MOVEMENT_CORRECTION_FACTOR = 0.012
     RIGHT_MOVEMENT_CORRECTION_FACTOR = 1 + MOVEMENT_CORRECTION_FACTOR
     LEFT_MOVEMENT_CORRECTION_FACTOR = 1 - MOVEMENT_CORRECTION_FACTOR
-    LEFT_MOTOR_CORRECTION_FACTOR = 1.1
+    LEFT_MOTOR_CORRECTION_FACTOR = 1.092
 
     def __init__(self):
         """
@@ -266,6 +266,16 @@ class MotorController:
             print(error)
 
     def move_forward(self):
+        """
+        Moves the robot forward at a standard speed.
+    
+        This method sets the degrees-per-second speed and power for both 
+        the left and right motors, with speed correction applied to the 
+        left motor for balanced movement.
+    
+        :return: None
+        Author: Jack McDonald
+        """
         self.motor_left.set_dps(self.FWD_SPEED * self.LEFT_MOTOR_CORRECTION_FACTOR)
         self.motor_right.set_dps(self.FWD_SPEED)
         self.motor_left.set_limits(self.POWER_LIMIT, self.FWD_SPEED)
@@ -274,10 +284,28 @@ class MotorController:
         self.motor_right.set_power(35)
 
     def stop(self):
+        """
+        Stops the robot by setting the power of both motors to zero.
+    
+        This method ensures that both the left and right motors halt 
+        immediately to stop any movement of the robot.
+    
+        :return: None
+        Author: Jack McDonald
+        """
         self.motor_left.set_power(0)
         self.motor_right.set_power(0)
 
     def move_forward_slow(self):
+        """
+        Moves the robot forward at a slower speed.
+    
+        This method configures the motors with a reduced power and speed 
+        setting, providing slower and more controlled forward motion.
+    
+        :return: None
+        Author: Jack McDonald
+        """
         self.motor_left.set_dps(self.FWD_SPEED * self.LEFT_MOTOR_CORRECTION_FACTOR)
         self.motor_right.set_dps(self.FWD_SPEED)
         self.motor_left.set_limits(self.POWER_LIMIT, self.FWD_SPEED)

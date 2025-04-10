@@ -169,13 +169,6 @@ class Robot:
         time.sleep(0.2)
         self.navigation.blocked = False
 
-        x_interval = 3
-        y_interval = 11
-
-        x = 0
-        facing_west = True
-
-        # self.chassis.move_distance_forward(0.11)
         self.chassis.move_until_distance(74)
         temp = self.navigation.found
         for i in range(7):
@@ -252,10 +245,6 @@ class Robot:
             self.colour_reading = self.sensors.get_colour_name()
             self.distance_reading = self.sensors.get_us_sensor_distance()
             self.touch_reading = self.sensors.get_touch_sensor_state()
-            # print(self.colour_reading, colour_sensor.get_raw_rgb())
-            # print(self.distance_reading)
-            # print(self.touch_reading)
-            # time.sleep(0.01)
 
     def __emergency_stop_check(self):
         while self.state != "idle":

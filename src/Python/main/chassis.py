@@ -31,15 +31,14 @@ class Chassis:
 
     def __init__(self, robot):
         """
-        Represents the main class responsible for initializing the 
-        MotorController object. This class serves as the entry point 
-        to create an instance of the MotorController and link it 
-        to its functionalities.
-
-        :Attributes:
-            MotorController (MotorController): An instance of the 
-            MotorController class, initialized when creating this class.
-        Author: Jack McDonald
+        Initializes the Chassis class and its dependencies.
+        
+        This constructor links the chassis with its motor control
+        system and validates the provided robot instance.
+        
+        :param robot: The robot instance to associate with the chassis.
+        :type robot: Robot
+        :raises TypeError: If the provided `robot` is not an instance of the Robot class.
         """
         from robot import Robot
         if not isinstance(robot, Robot):
@@ -50,11 +49,13 @@ class Chassis:
 
     def move_until_colour(self, colour: str):
         """
-        Moves the robot until the specified colour is detected. The movement stops when the given
-        colour is identified. This function assumes a mechanism to detect colours and halts operation
-        when the desired condition is fulfilled.
-
-        :param colour: The target colour to be detected during the movement.
+        Moves the robot forward until the specified colour is detected.
+        
+        The robot continuously moves forward while checking its colour sensor.
+        Once the target colour is detected, the robot halts, rolls back slightly,
+        and stops.
+        
+        :param colour: The target colour to detect.
         :type colour: str
         :return: None
         """
@@ -64,24 +65,21 @@ class Chassis:
         self.MotorController.stop()
         time.sleep(0.3)
         self.MotorController.move_distance_forward(distance=-ROLLBACK_DISTANCE,
-                                          speed=self.MotorController.FWD_SPEED / 1.4)
+                                                   speed=self.MotorController.FWD_SPEED / 1.4)
         time.sleep(0)
         self.MotorController.stop()
 
     def move_until_distance(self, distance: int):
         """
-        Move the robot until the distance to an object is less than or equal to
-        the specified value in centimeters.
-
-        This method allows the robot to move forward until the distance
-        to an object falls below or equals the specified threshold. The
-        distance is measured in centimeters using the robot's sensors.
-
-        :param distance: The maximum distance in centimeters to an object
-                        before the robot should stop moving.
+        Moves the robot forward until an object is within a specified distance.
+        
+        The robot continues moving forward until its sensors detect an object
+        closer than or equal to the given distance in centimeters. If a red
+        colour is detected in the "Search" state, it triggers fire extinguishment.
+        
+        :param distance: Maximum distance in centimeters to stop moving.
         :type distance: int
         :return: None
-        Author: Jack McDonald
         """
 
         self.MotorController.move_forward()
@@ -95,11 +93,11 @@ class Chassis:
 
     def move_one_tile(self):
         """
-        Moves the robot one tile further in the current direction of movement by 
-        using the colour sensor to verify that has crossed a black line. 
-        This function assumes the robot's movement direction and its environment
-        are predefined and does not take any argument.
-
+        Moves the robot forward by one tile using the colour sensor.
+        
+        The robot first detects and crosses a black line, then travels a
+        specified overrun distance before stopping.
+        
         :return: None
         """
         # Move forward until black line is detected
@@ -110,61 +108,46 @@ class Chassis:
 
     def turn_right(self):
         """
-        Executes a right turn operation.
-    
-        This method turns the robot's chassis to the right by adjusting
-        the motor's power and operation. The robot's environment and
-        movement are assumed to allow for a smooth turn without obstacles.
+        Rotates the robot 90 degrees to the right.
+        
+        This method adjusts the motor system to turn the robot to the
+        right by the specified angle.
         
         :return: None
         """
-        self.MotorController.rotate(
-            angle=RIGHT,
-            speed=self.MotorController.TRN_SPEED
-        )
-        # Ralph
+        self.MotorController.rotate(angle=RIGHT,
+                                    speed=self.MotorController.TRN_SPEED)
 
     def turn_left(self):
         """
-        Executes a left turn operation.
-    
-        This method turns the robot's chassis to the left by adjusting 
-        the motor system. Ensure the path is clear before invoking this 
-        function to avoid collisions.
+        Rotates the robot 90 degrees to the left.
+        
+        This method adjusts the motor system to turn the robot to the
+        left by the specified angle.
         
         :return: None
         """
-        self.MotorController.rotate(
-            angle=LEFT,
-            speed=self.MotorController.TRN_SPEED
-        )
-
-        # Ralph
+        self.MotorController.rotate(angle=LEFT,
+                                    speed=self.MotorController.TRN_SPEED)
 
     def turn_around(self):
         """
-        Rotates the robot by 180 degrees.
-    
-        This method enables a complete 180-degree turn for the robot,
-        effectively reversing its current direction of travel. This is 
-        useful in scenarios where the robot needs to retrace its path.
+        Rotates the robot 180 degrees to reverse its direction.
+        
+        This method performs a full rotation to allow the robot to
+        face the opposite direction.
         
         :return: None
         """
-        self.MotorController.rotate(
-            angle=AROUND,
-            speed=self.MotorController.TRN_SPEED
-        )
-
-        # Ralph
+        self.MotorController.rotate(angle=AROUND,
+                                    speed=self.MotorController.TRN_SPEED)
 
     def extinguish_fire(self):
         """
-        Activates the fire extinguisher mechanism.
-    
-        This method is responsible for initiating the robot's fire suppression
-        system. Ensure that the fire detection mechanism has identified the 
-        fire's location before triggering this function.
+        Activates the robot's fire-extinguishing mechanism.
+        
+        The robot reverses slightly, dispenses the fire suppressant,
+        and returns to its original position.
         
         :return: None
         """
@@ -176,18 +159,52 @@ class Chassis:
         self.MotorController.move_distance_forward(distance=EXTINGUISH_DISTANCE,
                                                    speed=self.MotorController.FWD_SPEED / 2)
 
-        # Ralph
-
     def move_distance_forward(self, distance: int):
+        """
+        Moves the robot forward by a specific distance.
+        
+        The robot moves a fixed distance forward at the motor's configured speed.
+        
+        :param distance: The distance to move forward, in meters.
+        :type distance: int
+        :return: None
+        """
         self.MotorController.move_distance_forward(distance=distance, speed=self.MotorController.FWD_SPEED)
 
     def turn_degrees(self, degrees: int):
+        """
+        Rotates the robot by a specified number of degrees.
+        
+        The robot rotates either clockwise or counterclockwise, depending 
+        on the value of the degrees parameter.
+        
+        :param degrees: The angle to rotate in degrees (positive for clockwise, negative for counterclockwise).
+        :type degrees: int
+        :return: None
+        """
         self.MotorController.rotate(angle=degrees, speed=self.MotorController.TRN_SPEED)
 
     def move_distance_forward_slow(self, param):
+        """
+        Moves the robot forward slowly by a specific distance.
+        
+        The robot advances forward at half its normal speed.
+        
+        :param param: The distance to move forward, in meters.
+        :type param: int
+        :return: None
+        """
         self.MotorController.move_distance_forward(distance=param, speed=self.MotorController.FWD_SPEED / 2)
 
     def move_until_line(self):
+        """
+        Moves the robot forward slowly until it detects a black or grey line.
+        
+        This method polls the robot's colour sensor and halts when the
+        specified line is detected.
+        
+        :return: None
+        """
         self.MotorController.move_forward_slow()
         while self.robot.get_colour() != "black" or self.robot.get_colour() != "grey":
             pass
